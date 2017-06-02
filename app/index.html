@@ -1,0 +1,233 @@
+<!-- Main Web Page -->
+<!-- Author: E. Adrián Garro Sánchez [2014088081] -->
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, 
+        shrink-to-fit=no">
+    <meta name="description" content="Página principal de cineTEC">
+    <meta name="author" content="E. Adrián Garro Sánchez">
+
+    <title>cineTEC</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+    <!-- Plugin CSS -->
+    <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/creative.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+    <div data-include="header"></div>
+    
+    <header class="masthead">
+        <div class="header-content">
+            <div class="header-content-inner">
+                <h1 id="homeHeading">Los últimos estrenos en tu sala favorita</h1>
+                <hr>
+                <p>Nuestra misión es ofrecerte la mejor experiencia en cine!</p>
+                <a class="btn btn-primary btn-xl" href="#cinemaListings">
+                    Ir a cartelera</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="bg-primary" id="cinemaListings">
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 offset-lg-4">
+                    
+                    <form class="form-horizontal">
+                    <fieldset>
+
+                    <!-- Form Name -->
+                    <legend>Elige tus preferencias!</legend>
+                    
+                    <hr>
+
+                    <!-- Select Basic -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="selectCountry">Selecciona tu país</label>
+                        <div class="col-md-4">
+                            <select id="selectCountry" name="selectCountry" class="form-control">
+                                <!-- Query FireBase -->
+                                <option value="Costa Rica">Costa Rica</option>
+                                <option value="Colombia">Colombia</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Select Basic -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="selectBranch">Selecciona tu sucursal favorita
+                        </label>
+                        <div class="col-md-4">
+                            <select id="selectBranch" name="selectBranch" class="form-control">
+                                <!-- Query FireBase -->
+                                <option value="Cartago">Cartago</option>
+                                <option value="Bogotá">Bogotá</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Select Basic -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="selectType">Selecciona el tipo de sala
+                        </label>
+                        <div class="col-md-4">
+                            <select id="selectType" name="selectType" class="form-control">
+                                <!-- Query FireBase -->
+                                <option value="2D">2D</option>
+                                <option value="3D">3D</option>
+                                <option value="4D">4D</option>
+                                <option value="4D VIP">4D VIP</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <!-- Button -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="consultButton">
+                        </label>
+                        <div class="col-md-4">
+                            <!--<button id="consultButton" name="consultButton" class="btn btn-info"> Consultar Cartelera!
+                            </button>-->
+                            <a class="btn btn-default btn-xl sr-button" href="cinemaListings.html">Consultar Cartelera!</a>
+                        </div>
+                    </div>
+
+                    </fieldset>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    
+    </section>
+
+    <section id="services">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">A tu servicio</h2>
+                    <hr class="primary">
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-3x fa-diamond text-primary sr-icons"></i>
+                        <h3>Salas VIP</h3>
+                        <p class="text-muted">Nuestras cómodas salas VIP cuentan con último en tecnología.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-3x fa-paper-plane text-primary sr-icons"></i>
+                        <h3>Sin filas</h3>
+                        <p class="text-muted">Nuestras butacas están numeradas, así que no tendrás que esperar largas filas. </p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-3x fa-newspaper-o text-primary sr-icons"></i>
+                        <h3>Últimos estrenos</h3>
+                        <p class="text-muted">Mantenemos nuestra cartelera con los últimos estrenos del séptimo arte.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-3x fa-heart text-primary sr-icons"></i>
+                        <h3>Calidad</h3>
+                        <p class="text-muted">Trabajamos con amor para ofrecerte calidad!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="no-padding" id="portfolio">
+        <div class="container-fluid">
+            <div class="row no-gutter popup-gallery">
+                <div class="col-lg-4 col-sm-6">
+                    <img class="img-fluid" src="img/portfolio/1.jpg" alt="">
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <img class="img-fluid" src="img/portfolio/2.jpg" alt="">
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <img class="img-fluid" src="img/portfolio/3.jpg" alt="">
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <img class="img-fluid" src="img/portfolio/4.jpg" alt="">
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <img class="img-fluid" src="img/portfolio/5.jpg" alt="">
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <img class="img-fluid" src="img/portfolio/6.jpg" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <h2 class="section-heading">Contáctanos!</h2>
+                    <hr class="primary">
+                    <p>Para consultas o sugerencias puedes llamarnos o enviarnos un email y te atenderemos lo antes posible!</p>
+                </div>
+                <div class="col-lg-4 offset-lg-2 text-center">
+                    <i class="fa fa-phone fa-3x sr-contact"></i>
+                    <p>+506-85635561</p>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <i class="fa fa-envelope-o fa-3x sr-contact"></i>
+                    <p><a href="mailto:your-email@your-domain.com">adriangarro81@gmail.com</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/4.1.1/firebase.js"></script>
+    
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/tether/tether.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    
+    <!-- Plugin JavaScript -->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
+    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="js/creative.min.js"></script>
+    <script src="js/includeHTML.js"></script>
+    <script src="js/index.js"></script>
+    
+</body>
+
+</html>
