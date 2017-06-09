@@ -11,6 +11,7 @@
         shrink-to-fit=no">
     <meta name="description" content="Página principal de cineTEC">
     <meta name="author" content="E. Adrián Garro Sánchez">
+    <meta http-equiv="cache-control" content="no-cache" />
 
     <title>cineTEC</title>
 
@@ -66,9 +67,6 @@
                         <div class="col-md-4">
                             <select id="selectCountry" name="selectCountry" 
                                 class="form-control">
-                                <option disabled selected value>  
-                                    País 
-                                </option>
                                 <!-- Query FireBase -->
                             </select>
                         </div>
@@ -104,9 +102,10 @@
                         <label class="col-md-4 control-label" for="consultButton">
                         </label>
                         <div class="col-md-4">
-                            <!--<button id="consultButton" name="consultButton" class="btn btn-info"> Consultar Cartelera!
-                            </button>-->
-                            <a class="btn btn-default btn-xl sr-button" href="cinemaListings.html">Consultar Cartelera!</a>
+                            <a id= "consultButton" 
+                            class="btn btn-default btn-xl sr-button">
+                            Consultar Cartelera!
+                            </a>
                         </div>
                     </div>
 
@@ -208,7 +207,8 @@
     </section>
     
     <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/4.1.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js">
+    </script>
     
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -218,7 +218,8 @@
     <!-- Plugin JavaScript -->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
-    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js">
+    </script>
 
     <!-- Custom scripts for this template -->
     <script src="js/creative.min.js"></script>
