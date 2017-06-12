@@ -9,7 +9,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, 
         shrink-to-fit=no">
-    <meta name="description" content="Página principal de cineTEC">
+    <meta name="description" content="Página que contiene la Cartelera">
     <meta name="author" content="E. Adrián Garro Sánchez">
     <meta http-equiv="cache-control" content="no-cache" />
 
@@ -19,15 +19,20 @@
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom fonts for this template -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="vendor/font-awesome/css/font-awesome.min.css" 
+        rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' 
+        rel='stylesheet' type='text/css'>
 
     <!-- Plugin CSS -->
     <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/creative.min.css" rel="stylesheet">
+    
+    <!-- Sweet Alert -->
+    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
 
 </head>
 
@@ -47,13 +52,30 @@
 
     <section id="services">
         <div class="container">
-            <div class="row">
+            <div class="row justify-content-md-center">
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">Cartelera</h2>
                     <p id="date"></p>
-                    <hr class="primary">
-                    <!-- FireBase Query -->
                 </div>
+            </div>
+            <!-- Movies Query Fire Base -->
+            <br>
+            <div class="row carousel-row">
+                <div class="col-4">
+                    <div class="thumbnail">
+                        <img src="http://placehold.it/200x300"
+                        class="img-responsive"/>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="caption">
+                        <h3>Header Name</h3>
+                        <p>Description</p>
+                        <p align="center"><a href="http://bootsnipp.com/" class="btn btn-primary btn-block">Open</a>
+                        </p>
+                    </div>
+                </div>
+                <!-- Movies Query Fire Base -->
             </div>
         </div>
     </section>
@@ -72,6 +94,7 @@
     <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
     <script src="vendor/magnific-popup/jquery.magnific-popup.min.js">
     </script>
+    <script src="js/sweetalert.min.js"></script>
     
     <!-- Custom scripts for this template -->
     <script src="js/creative.min.js"></script>

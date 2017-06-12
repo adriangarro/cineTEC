@@ -127,16 +127,28 @@ function showRoomType() {
 function consultListings() {
 	$("#consultButton")
 		.click(function () {
-			localStorage.setItem("countryKey", 
-				$("#selectCountry").val()
-			);
-			localStorage.setItem("branchKey", 
-				$("#selectBranch").val()
-			);
-			localStorage.setItem("typeKey", 
-				$("#selectType").val()
-			);
-			window.location.href = "cinemaListings.html";
+			var countryKey = $("#selectCountry").val();
+			var branchKey = $("#selectBranch").val();
+			var typeKey = $("#selectType").val();
+			if (countryKey === null 
+				|| branchKey === null 
+				|| typeKey === null) {
+					sweetAlert("Oops...", 
+						"No has seleccionado todos los datos!", 
+						"error"
+					);
+			} else {
+				localStorage.setItem("countryKey", 
+					countryKey
+				);
+				localStorage.setItem("branchKey", 
+					branchKey
+				);
+				localStorage.setItem("typeKey", 
+					typeKey
+				);
+				window.location.href = "cinemaListings.html";
+			}
 		});
 }
 
