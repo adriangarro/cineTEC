@@ -147,7 +147,7 @@ function consultListings() {
 				localStorage.setItem("typeKey", 
 					typeKey
 				);
-				window.location.href = "cinemaListings.html";
+				window.location.href = "billboard.html";
 			}
 		});
 }

@@ -7,11 +7,10 @@
 <head>
 
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, 
-        shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, 
+        initial-scale=1,shrink-to-fit=no">
     <meta name="description" content="Página que contiene la Cartelera">
     <meta name="author" content="E. Adrián Garro Sánchez">
-    <meta http-equiv="cache-control" content="no-cache" />
 
     <title>Cartelera</title>
 
@@ -40,42 +39,57 @@
 
     <div data-include="header"></div>
     
-    <header class="masthead">
-        <div class="header-content">
-            <div class="header-content-inner">
-                <h1 id="homeHeading">
-                </h1>
-                <hr>
-            </div>
-        </div>
-    </header>
-
-    <section id="services">
-        <div class="container">
-            <div class="row justify-content-md-center">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Cartelera</h2>
-                    <p id="date"></p>
+    <a href="#shows">
+        <header class="masthead">
+            <div class="header-content">
+                <div class="header-content-inner">
+                    <h1 id="homeHeading">
+                    </h1>
+                    <hr>
                 </div>
             </div>
-            <!-- Movies Query Fire Base -->
-            <br>
-            <div class="row carousel-row">
-                <div class="col-4">
-                    <div class="thumbnail">
-                        <img src="http://placehold.it/200x300"
+        </header>
+    </a>
+    
+    <section id="shows">
+        <h1 align="center"> Cartelera </h1>
+        <br>
+        <div class="container" 
+        style="box-shadow: 0px 2px 25px rgba(0,0,0,.25);">
+            <div class="list-group">
+            
+                <!-- Query Firebase -->        
+                <div class="list-group-item">
+                    <div class="col-md-4">
+                        <img src="img/deadpool.jpg"
                         class="img-responsive"/>
                     </div>
-                </div>
-                <div class="col-6">
-                    <div class="caption">
-                        <h3>Header Name</h3>
-                        <p>Description</p>
-                        <p align="center"><a href="http://bootsnipp.com/" class="btn btn-primary btn-block">Open</a>
+                    <div class="col-md-6">
+                        <h4 class="list-group-item-heading"> 
+                            List group heading 
+                        </h4>
+                        <p class="list-group-item-text"> 
+                        Qui diam libris ei, vidisse incorrupte at mel. 
+                        His euismod salutandi dissentiunt eu. 
+                        Habeo offendit ea mea. Nostro blandit sea ea, 
+                        viris timeam molestiae an has. 
+                        At nisl platonem eum.
                         </p>
+                        <div class="btn-group">
+                            <a class="btn btn-info btn-md sr-button">
+                                Trailer
+                            </a>
+                            <a class="btn btn-danger btn-md sr-button">
+                                Crítica
+                            </a>
+                            <a class="btn btn-success btn-lg sr-button">
+                                Comprar tiquetes
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <!-- Movies Query Fire Base -->
+                <!-- Query Firebase -->
+                
             </div>
         </div>
     </section>
@@ -99,7 +113,7 @@
     <!-- Custom scripts for this template -->
     <script src="js/creative.min.js"></script>
     <script src="js/includeHTML.js"></script>
-    <script src="js/cinemaListings.js"></script>
+    <script src="js/billboard.js"></script>
     
 </body>
 

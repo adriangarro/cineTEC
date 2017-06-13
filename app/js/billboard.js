@@ -2,7 +2,7 @@
 	+----------------------------------------
 	project: cineTEC
 	-----------------------------------------
-	file: cinemaListings.js
+	file: billboard.js
 	-----------------------------------------
 	author: Elberth Adrian Garro Sanchez
 	----------------------------------------+
@@ -43,14 +43,6 @@ function setHomeHeading() {
 		});
 }
 
-function showDate() {
-	var now = new Date();
-	var date = "Actualizada al "
-		+ now.toLocaleString();
-	$("#date").html(date);
-}
-
 jQuery(
-	setHomeHeading(),
-	showDate()
+	setHomeHeading()
 );
