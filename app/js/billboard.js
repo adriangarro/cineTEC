@@ -8,6 +8,7 @@
 	----------------------------------------+
 */
 
+//-----------------------------------
 // connect to firebase
 var config = {
 	apiKey: "AIzaSyBPFPZngjPBsG38peTcXUP8rWA8QnrUanQ",
@@ -18,31 +19,36 @@ var config = {
 	messagingSenderId: "171738294119"
 };
 firebase.initializeApp(config);
+//-----------------------------------
 
 function setHomeHeading() {
-	var countryKey = localStorage.getItem("countryKey");
-	var branchKey = localStorage.getItem("branchKey");
-	var branchPath = "branches/"
-		+ countryKey
-		+ "/"
-		+ branchKey;
-	// create a new connection to firebase
-	var refBranch = firebase
-		.database()
-		.ref(branchPath)
-		.orderByKey();
-	// listen to data updates from firebase
-	refBranch.once("value")
-		.then(function (snapshot) {
-			var branchName = snapshot.child("name").val();
-			$("#homeHeading")
-				.text("Presentando en " 
-					+ branchName
-					+ ":"
-				);
-		});
+	branch = localStorage.getItem("branch");
+	$("#homeHeading")
+		.text("Presentando en " 
+			+ branch
+			+ ":"
+		);
+}
+
+function showBillBoardDetails() {
+	//--------------------------------------------------
+		var roomType = localStorage.getItem("roomType");
+		$("#roomTypeLabel")
+			.text(
+				"Salas " 
+				+ roomType
+			);
+	//--------------------------------------------------
+	// show date
+	var date = localStorage
+		.getItem("date");
+	$("#dateLabel")
+		.text(date);
+	//--------------------------------------------------
 }
 
 jQuery(
-	setHomeHeading()
+	setHomeHeading(),
+	showBillBoardDetails()
 );
+

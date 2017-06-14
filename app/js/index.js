@@ -8,6 +8,7 @@
 	----------------------------------------+
 */
 
+//-----------------------------------
 // connect to firebase
 var config = {
 	apiKey: "AIzaSyBPFPZngjPBsG38peTcXUP8rWA8QnrUanQ",
@@ -18,64 +19,128 @@ var config = {
 	messagingSenderId: "171738294119"
 };
 firebase.initializeApp(config);
+//-----------------------------------
+
+function showDates() {
+	$("#selectDate").pickadate({
+		//-----------------------------------
+		monthsFull: [
+			"enero", "febrero", "marzo", "abril", 
+			"mayo", "junio", "julio", "agosto", 
+			"septiembre", "octubre", "noviembre", "diciembre"
+		],
+		monthsShort: [
+			"ene", "feb", "mar", "abr", 
+			"may", "jun", "jul", "ago", 
+			"sep", "oct", "nov", "dic"
+		],
+		weekdaysFull: [
+			"domingo", "lunes", "martes", "miércoles", 
+			"jueves", "viernes", "sábado"
+		],
+		weekdaysShort: [
+			"dom", "lun", "mar", 
+			"mié", "jue", "vie", "sáb"
+		],
+		today: "hoy",
+		clear: "borrar",
+		close: "cerrar",
+		firstDay: 1,
+		format: "dddd d !de mmmm !de yyyy",
+		formatSubmit: "yyyy/mm/dd",
+		min: [2017,6-1,22],
+		//-----------------------------------
+	});
+}
 
 function showCountries() {
-	// adding dummy option
-	$("<option disabled selected value>País</option>")
-		.appendTo("#selectCountry");
-	// create a new connection to firebase
-	var refCountries = firebase
-		.database()
-		.ref("countries")
-		.orderByKey();
-	// listen to data updates from firebase
-	refCountries.once("value")
-		.then(function (snapshot) {
-			snapshot
-				.forEach(function (childSnapshot) {
-					var countryKey = childSnapshot.key;
-					var countryData = childSnapshot.val();
-					var countryOption = "<option value=" 
-						+ countryKey 
-						+ ">" 
-						+ countryData.name 
-						+ "</option>";
-					$(countryOption)
-						.appendTo("#selectCountry");
-				});
+	$("#selectDate")
+		.change(function() {
+			//-----------------------------------
+			// clean form
+			$("#selectCountry")
+				.html("");
+			$("#selectBranch")
+				.html("");
+			$("#selectRoomType")
+				.html("");
+			//-----------------------------------
+			// if user select date		
+			if ($(this).val()) {
+				//-----------------------------------
+				// adding dummy option
+				$("<option disabled selected value>País</option>")
+					.appendTo("#selectCountry");
+				//-----------------------------------
+				// create a new connection to firebase
+				var refCountries = firebase
+					.database()
+					.ref("countries")
+					.orderByKey();
+				//-----------------------------------
+				// listen to data updates from firebase
+				refCountries.once("value")
+					.then(function (snapshot) {
+						snapshot
+							.forEach(function (childSnapshot) {
+								//-----------------------------------
+								var countryKey = childSnapshot.key;
+								var countryData = childSnapshot.val();
+								var countryOption = "<option value=" 
+									+ countryKey 
+									+ ">" 
+									+ countryData.name 
+									+ "</option>";
+								//-----------------------------------
+								$(countryOption)
+									.appendTo("#selectCountry");
+								//-----------------------------------
+							});
+					});
+			}
 		});
 }
 
 function showBranches() {
 	$("#selectCountry")
 		.change(function() {
+			//----------------------------------------------
 			// clean branch options
 			$("#selectBranch")
 				.html("");
+			//----------------------------------------------
 			// adding dummy option
 			$("<option disabled selected value>Sucursal</option>")
 				.appendTo("#selectBranch");
-			// clean type options	
-			$("#selectType")
+			//----------------------------------------------
+			// clean room type options	
+			$("#selectRoomType")
 				.html("");
+			//----------------------------------------------
 			// adding dummy option
 			$("<option disabled selected value>Tipo de Sala</option>")
+			//----------------------------------------------
 			// preparing path
 			var branchesPath = "branches/";
+			//----------------------------------------------
 			$("#selectCountry option:selected")
 				.each(function() {
+					//----------------------------------------------
 					// completing path
 					branchesPath += $(this).val();
+					//----------------------------------------------
 					// create a new connection to firebase
 					var refBranches = firebase
 						.database()
 						.ref(branchesPath)
-						.orderByKey();	
+						.orderByKey();
+					//----------------------------------------------
 					// listen to data updates from firebase	
 					refBranches.once("value")
 						.then(function (snapshot) {
 							snapshot
 								.forEach(function (childSnapshot) {
+									//-----------------------------------
 									var branchKey = childSnapshot.key;
 									var branchData = childSnapshot.val();
 									var branchOption = "<option value=" 
@@ -83,42 +148,51 @@ function showBranches() {
 										+ ">" 
 										+ branchData.name 
 										+ "</option>";
+									//-----------------------------------
 									$(branchOption)
 										.appendTo("#selectBranch");
+									//-----------------------------------
 								});
 						});
 				});
 		});
 }
 
-function showRoomType() {
+function showRoomTypes() {
 	$("#selectBranch")
 		.change(function () {
-			// clean type options
-			$("#selectType")
+			//----------------------------------------------
+			// clean room type options
+			$("#selectRoomType")
 				.html("");
+			//----------------------------------------------
 			// adding dummy option
 			$("<option disabled selected value>Tipo de Sala</option>")
-				.appendTo("#selectType");
+				.appendTo("#selectRoomType");
+			//----------------------------------------------
 			// create a new connection to firebase
-			var refTypes = firebase
+			var refRoomTypes = firebase
 				.database()
 				.ref("roomtypes")
 				.orderByKey();
+			//----------------------------------------------
 			// listen to data updates from firebase
-			refTypes.once("value")
+			refRoomTypes.once("value")
 				.then(function (snapshot) {
 					snapshot
 						.forEach(function (childSnapshot) {
-							var typeKey = childSnapshot.key;
-							var typeData = childSnapshot.val();
-							var typeOption = "<option value=" 
-								+ typeKey 
+							//----------------------------------------------
+							var roomTypeKey = childSnapshot.key;
+							var roomTypeData = childSnapshot.val();
+							var roomTypeOption = "<option value=" 
+								+ roomTypeKey 
 								+ ">" 
-								+ typeData.name 
+								+ roomTypeData.name 
 								+ "</option>";
-							$(typeOption)
-								.appendTo("#selectType");
+							//----------------------------------------------
+							$(roomTypeOption)
+								.appendTo("#selectRoomType");
+							//----------------------------------------------
 						});
 				});
 		});
@@ -127,35 +201,68 @@ function showRoomType() {
 function consultListings() {
 	$("#consultButton")
 		.click(function () {
+			//----------------------------------------------------------
+			var date = $("#selectDate").val();
 			var countryKey = $("#selectCountry").val();
 			var branchKey = $("#selectBranch").val();
-			var typeKey = $("#selectType").val();
-			if (countryKey === null 
+			var branch = $("#selectBranch option:selected").text();
+			var roomTypeKey = $("#selectRoomType").val();
+			var roomType = $("#selectRoomType option:selected").text();
+			//----------------------------------------------------------
+			if (date === ""
+				|| countryKey === null 
 				|| branchKey === null 
-				|| typeKey === null) {
-					sweetAlert("Oops...", 
-						"No has seleccionado todos los datos!", 
+				|| roomTypeKey === null) {
+					//----------------------------------------------
+					sweetAlert("Uups...", 
+						"¡No has seleccionado todos los datos!", 
 						"error"
 					);
+					//----------------------------------------------
 			} else {
+				//---------------------------------------------------
+				var input = $("#selectDate").pickadate();
+				var picker = input.pickadate("picker");
+				var dateISO = picker.get("select", "yyyy-mm-dd");
+				localStorage.setItem("dateISO", 
+					dateISO
+				);
+				//---------------------------------------------------
+				localStorage.setItem("date", 
+					date
+				);
+				//----------------------------------------------
 				localStorage.setItem("countryKey", 
 					countryKey
 				);
+				//----------------------------------------------
 				localStorage.setItem("branchKey", 
 					branchKey
 				);
-				localStorage.setItem("typeKey", 
-					typeKey
+				//----------------------------------------------
+				localStorage.setItem("branch", 
+					branch
 				);
+				//----------------------------------------------
+				localStorage.setItem("roomTypeKey", 
+					roomTypeKey
+				);
+				//----------------------------------------------
+				localStorage.setItem("roomType", 
+					roomType
+				);
+				//----------------------------------------------
 				window.location.href = "billboard.html";
+				//----------------------------------------------
 			}
 		});
 }
 
 jQuery(
+	showDates(),
 	showCountries(),
 	showBranches(),
-	showRoomType(),
+	showRoomTypes(),
 	consultListings()
 );
 

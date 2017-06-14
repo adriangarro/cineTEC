@@ -14,24 +14,27 @@
 
     <title>Cartelera</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CSS -->
+    
+    <!-- Bootstrap core -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 
-    <!-- Custom fonts for this template -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" 
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" 
         rel="stylesheet" type="text/css">
+        
+    <!-- Google Fonts -->
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' 
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,700,700italic,900,900italic' 
         rel='stylesheet' type='text/css'>
 
-    <!-- Plugin CSS -->
-    <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
+    <!-- Magnific Popup -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
+    <!-- Style -->
     <link href="css/creative.min.css" rel="stylesheet">
     
-    <!-- Sweet Alert -->
-    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+    <!-- /CSS -->
 
 </head>
 
@@ -53,6 +56,8 @@
     
     <section id="shows">
         <h1 align="center"> Cartelera </h1>
+        <h5 id="roomTypeLabel" align="center"></h5>
+        <h5 id="dateLabel" align="center"></h5>
         <br>
         <div class="container" 
         style="box-shadow: 0px 2px 25px rgba(0,0,0,.25);">
@@ -66,14 +71,11 @@
                     </div>
                     <div class="col-md-6">
                         <h4 class="list-group-item-heading"> 
-                            List group heading 
+                            DEADPOOL
                         </h4>
                         <p class="list-group-item-text"> 
-                        Qui diam libris ei, vidisse incorrupte at mel. 
-                        His euismod salutandi dissentiunt eu. 
-                        Habeo offendit ea mea. Nostro blandit sea ea, 
-                        viris timeam molestiae an has. 
-                        At nisl platonem eum.
+                        Reparto:, Dirección:, Estudio:, 
+                        Género:, Clasificación:
                         </p>
                         <div class="btn-group">
                             <a class="btn btn-info btn-md sr-button">
@@ -94,26 +96,41 @@
         </div>
     </section>
     
+    <!-- Scripts -->
+
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js">
     </script>
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/tether/tether.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     
-    <!-- Plugin JavaScript -->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
-    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <!-- Tether -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+    
+    <!-- Bootstrap core -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    
+    <!-- jQuery Easing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    
+    <!-- Scroll Reveal -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollReveal.js/3.3.5/scrollreveal.min.js"></script>
+    
+    <!-- Magnific Popup -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js">
     </script>
-    <script src="js/sweetalert.min.js"></script>
     
-    <!-- Custom scripts for this template -->
-    <script src="js/creative.min.js"></script>
+    <!-- includeHTML -->
     <script src="js/includeHTML.js"></script>
+
+    <!-- Style Script -->
+    <script src="js/creative.min.js"></script>
+    
+    <!-- Main script -->
     <script src="js/billboard.js"></script>
+    
+    <!-- /Scripts -->
     
 </body>
 
