@@ -47,8 +47,18 @@ function showBillBoardDetails() {
 	//--------------------------------------------------
 }
 
+function getMovieData() {
+	var storage = firebase.storage();
+	var storageRef = storage.ref();
+	var movieRef = storageRef.child("img/deadpool.jpg");
+	movieRef.getDownloadURL().then(function(url) {
+		document.querySelector("#movieImg").src = url;
+	});
+}
+
 jQuery(
 	setHomeHeading(),
-	showBillBoardDetails()
+	showBillBoardDetails(),
+	getMovieData()
 );
 
