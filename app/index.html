@@ -14,67 +14,73 @@
 
     <title>cineTEC</title>
 
-    <!-- CSS -->
-    
-    <!-- Bootstrap core -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" 
-        rel="stylesheet" type="text/css">
-        
-    <!-- Google Fonts -->
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,700,700italic,900,900italic' 
-        rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 
-    <!-- Magnific Popup -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet">
+    <!-- Plugin CSS -->
+    <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
 
-    <!-- Style -->
+    <!-- Theme CSS -->
     <link href="css/creative.min.css" rel="stylesheet">
-    
+
     <!-- Pickadate -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/themes/classic.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/themes/classic.date.css" rel="stylesheet">
     
     <!-- Sweet Alert -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet" type="text/css">
-    
-    <!-- /CSS -->
 
 </head>
 
 <body id="page-top">
 
-    <div data-include="header"></div>
-    
-    <header class="masthead">
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="index.html">cineTEC</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll">Admin</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <header>
         <div class="header-content">
             <div class="header-content-inner">
                 <h1 id="homeHeading">Los últimos estrenos en tu sala favorita</h1>
                 <hr>
                 <p>¡La mejor experiencia en cine!</p>
-                <a class="btn btn-primary btn-xl" href="#billboard">
-                    Ir a cartelera</a>
+                <a href="#billboardPref" class="btn btn-primary btn-xl page-scroll">Ir a cartelera</a>
             </div>
         </div>
     </header>
 
-    <section id="billboard" class="bg-primary">
-        
+    <section class="bg-primary" id="billboardPref">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-12 offset-lg-4">
-                    
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">¡Elige tus preferencias!</h2>
                     <form class="form-horizontal">
                     <fieldset>
-
-                    <!-- Form Name -->
-                    <legend>¡Elige tus preferencias!</legend>
-                    
                     <hr>
-                    
                     <!-- Select Date -->
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="selectDate">Selecciona una fecha</label>
@@ -83,7 +89,6 @@
                                 type="datetime-local" class="form-control">
                         </div>
                     </div>
-                    
                     <!-- Select Country -->
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="selectCountry">Selecciona tu país</label>
@@ -94,7 +99,6 @@
                             </select>
                         </div>
                     </div>
-
                     <!-- Select Branch -->
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="selectBranch">Selecciona tu sucursal favorita
@@ -105,7 +109,6 @@
                             </select>
                         </div>
                     </div>
-
                     <!-- Select Room Type -->
                     <div class="form-group">
                         <label class="col-md-4 control-label" 
@@ -118,9 +121,7 @@
                             </select>
                         </div>
                     </div>
-                    
                     <hr>
-                    
                     <!-- Button -->
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="consultButton">
@@ -132,15 +133,58 @@
                             </a>
                         </div>
                     </div>
-
                     </fieldset>
                     </form>
-                    
                 </div>
             </div>
         </div>
-    
     </section>
+    
+    <aside class="bg-dark" id="billboard">
+        <div class="container text-center">
+            <div class="call-to-action">
+                <h2 id="dateLabel"></h3>
+                <h2 id="branchLabel"></h2>
+                <h3 id="roomTypeLabel"></h3>
+                
+                <br>
+                <div class="container" style="box-shadow: 0px 2px 25px rgba(0,0,0,.25);">
+                    <div class="list-group">
+                        <!-- Query Firebase -->        
+                        <div class="list-group-item" style="background-color:#222; height:250px;border:0">
+                            <div class="col-lg-3">
+                                <img id="movieImg" class="img-responsive"/>
+                            </div>
+                            <div class="col-lg-9">
+                                <h2 class="list-group-item-heading"> 
+                                    DEADPOOL
+                                </h2>
+                                <br>
+                                <p class="list-group-item-text"> 
+                                Reparto:, Dirección:, Estudio:, 
+                                Género:, Clasificación:
+                                </p>
+                                <br>
+                                <div class="btn-group">
+                                    <a class="btn btn-info btn-md sr-button">
+                                        Trailer
+                                    </a>
+                                    <a class="btn btn-danger btn-md sr-button">
+                                        Crítica
+                                    </a>
+                                    <a class="btn btn-success btn-lg sr-button">
+                                        Comprar tiquetes
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Query Firebase -->
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+    </aside>
 
     <section id="services">
         <div class="container">
@@ -189,22 +233,22 @@
         <div class="container-fluid">
             <div class="row no-gutter popup-gallery">
                 <div class="col-lg-4 col-sm-6">
-                    <img class="img-fluid" src="img/portfolio/1.jpg">
+                    <img src="img/portfolio/thumbnails/1.jpg" class="img-responsive" alt="">
                 </div>
                 <div class="col-lg-4 col-sm-6">
-                    <img class="img-fluid" src="img/portfolio/2.jpg">
+                    <img src="img/portfolio/thumbnails/2.jpg" class="img-responsive" alt="">
                 </div>
                 <div class="col-lg-4 col-sm-6">
-                    <img class="img-fluid" src="img/portfolio/3.jpg">
+                    <img src="img/portfolio/thumbnails/3.jpg" class="img-responsive" alt="">
                 </div>
                 <div class="col-lg-4 col-sm-6">
-                    <img class="img-fluid" src="img/portfolio/4.jpg">
+                    <img src="img/portfolio/thumbnails/4.jpg" class="img-responsive" alt="">
                 </div>
                 <div class="col-lg-4 col-sm-6">
-                    <img class="img-fluid" src="img/portfolio/5.jpg">
+                    <img src="img/portfolio/thumbnails/5.jpg" class="img-responsive" alt="">
                 </div>
                 <div class="col-lg-4 col-sm-6">
-                    <img class="img-fluid" src="img/portfolio/6.jpg">
+                    <img src="img/portfolio/thumbnails/6.jpg" class="img-responsive" alt="">
                 </div>
             </div>
         </div>
@@ -212,13 +256,13 @@
 
     <section id="contact">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-8 offset-lg-2 text-center">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
                     <h2 class="section-heading">Contáctanos!</h2>
                     <hr class="primary">
                     <p>Para consultas o sugerencias puedes llamarnos o enviarnos un email y te atenderemos lo antes posible!</p>
                 </div>
-                <div class="col-lg-4 offset-lg-2 text-center">
+                <div class="col-lg-4 col-lg-offset-2 text-center">
                     <i class="fa fa-phone fa-3x sr-contact"></i>
                     <p>+506-85635561</p>
                 </div>
@@ -230,33 +274,22 @@
         </div>
     </section>
     
-    <!-- Scripts -->
-
     <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js">
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
     
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    
-    <!-- Tether -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
-    
-    <!-- Bootstrap core -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-    
-    <!-- jQuery Easing -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-    
-    <!-- Scroll Reveal -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollReveal.js/3.3.5/scrollreveal.min.js"></script>
-    
-    <!-- Magnific Popup -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js">
-    </script>
-    
-    <!-- includeHTML -->
-    <script src="js/includeHTML.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
+    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+    <!-- Theme JavaScript -->
+    <script src="js/creative.min.js"></script>
     
     <!-- Pickadate-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/picker.js"></script>
@@ -264,15 +297,10 @@
     
     <!-- SweetAlert -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-
-    <!-- Style Script -->
-    <script src="js/creative.min.js"></script>
     
     <!-- Main script -->
     <script src="js/index.js"></script>
-    
-    <!-- /Scripts -->
-    
+
 </body>
 
 </html>

@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var sass = require('gulp-sass');
+var less = require('gulp-less');
 var browserSync = require('browser-sync').create();
 var header = require('gulp-header');
 var cleanCSS = require('gulp-clean-css');
@@ -11,15 +11,15 @@ var pkg = require('./package.json');
 var banner = ['/*!\n',
     ' * Start Bootstrap - <%= pkg.title %> v<%= pkg.version %> (<%= pkg.homepage %>)\n',
     ' * Copyright 2013-' + (new Date()).getFullYear(), ' <%= pkg.author %>\n',
-    ' * Licensed under <%= pkg.license %> (https://github.com/BlackrockDigital/<%= pkg.name %>/blob/master/LICENSE)\n',
+    ' * Licensed under <%= pkg.license.type %> (<%= pkg.license.url %>)\n',
     ' */\n',
     ''
 ].join('');
 
-// Compiles SCSS files from /scss into /css
-gulp.task('sass', function() {
-    return gulp.src('scss/creative.scss')
-        .pipe(sass())
+// Compile LESS files from /less into /css
+gulp.task('less', function() {
+    return gulp.src('less/creative.less')
+        .pipe(less())
         .pipe(header(banner, { pkg: pkg }))
         .pipe(gulp.dest('css'))
         .pipe(browserSync.reload({
@@ -28,7 +28,7 @@ gulp.task('sass', function() {
 });
 
 // Minify compiled CSS
-gulp.task('minify-css', ['sass'], function() {
+gulp.task('minify-css', ['less'], function() {
     return gulp.src('css/creative.css')
         .pipe(cleanCSS({ compatibility: 'ie8' }))
         .pipe(rename({ suffix: '.min' }))
@@ -38,7 +38,7 @@ gulp.task('minify-css', ['sass'], function() {
         }))
 });
 
-// Minify custom JS
+// Minify JS
 gulp.task('minify-js', function() {
     return gulp.src('js/creative.js')
         .pipe(uglify())
@@ -50,8 +50,7 @@ gulp.task('minify-js', function() {
         }))
 });
 
-// Copy vendor files from /node_modules into /vendor
-// NOTE: requires `npm install` before running!
+// Copy vendor libraries from /node_modules into /vendor
 gulp.task('copy', function() {
     gulp.src(['node_modules/bootstrap/dist/**/*', '!**/npm.js', '!**/bootstrap-theme.*', '!**/*.map'])
         .pipe(gulp.dest('vendor/bootstrap'))
@@ -65,12 +64,6 @@ gulp.task('copy', function() {
     gulp.src(['node_modules/scrollreveal/dist/*.js'])
         .pipe(gulp.dest('vendor/scrollreveal'))
 
-    gulp.src(['node_modules/tether/dist/js/*.js'])
-        .pipe(gulp.dest('vendor/tether'))
-
-    gulp.src(['node_modules/jquery.easing/*.js'])
-        .pipe(gulp.dest('vendor/jquery-easing'))
-
     gulp.src([
             'node_modules/font-awesome/**',
             '!node_modules/font-awesome/**/*.map',
@@ -82,8 +75,8 @@ gulp.task('copy', function() {
         .pipe(gulp.dest('vendor/font-awesome'))
 })
 
-// Default task
-gulp.task('default', ['sass', 'minify-css', 'minify-js', 'copy']);
+// Run everything
+gulp.task('default', ['less', 'minify-css', 'minify-js', 'copy']);
 
 // Configure the browserSync task
 gulp.task('browserSync', function() {
@@ -95,8 +88,8 @@ gulp.task('browserSync', function() {
 })
 
 // Dev task with browserSync
-gulp.task('dev', ['browserSync', 'sass', 'minify-css', 'minify-js'], function() {
-    gulp.watch('scss/*.scss', ['sass']);
+gulp.task('dev', ['browserSync', 'less', 'minify-css', 'minify-js'], function() {
+    gulp.watch('less/*.less', ['less']);
     gulp.watch('css/*.css', ['minify-css']);
     gulp.watch('js/*.js', ['minify-js']);
     // Reloads the browser whenever HTML or JS files change
