@@ -176,7 +176,7 @@ function consultBranch() {
         var roomTypeKey = $("#selectRoomType").val();
         if (date===""|| countryKey===null||branchKey===null||roomTypeKey===null) {
             //hideBillboard();
-            swal("Uups...", "¡No has seleccionado todos los datos!", "error");
+            swal("Uups...", "¡No has seleccionado todos los datos!", "warning");
             return;
         } else {
             // set billboard title
@@ -186,7 +186,7 @@ function consultBranch() {
             $("#dateLabel").text("Presentando el " + date + ":");
             // show billboard details
             var branch = $("#selectBranch option:selected").text();
-             $("#branchLabel").text(branch);
+            $("#branchLabel").text(branch);
             var roomType = $("#selectRoomType option:selected").text();
             $("#roomTypeLabel").text("Salas " + roomType);
             // query billboards preferences
@@ -220,9 +220,6 @@ function consultBranch() {
                                         movieRef.once("value").then(function (snapshotMovie) {
                                             // prepare list item string
                                             var listItem = '<div class="list-group-item"'
-                                                + 'id="'
-                                                + snapshotMovie.key
-                                                + '"'
                                                 + 'style="background-color:#222;'
                                                 + 'height:250px;border:0"><div '
                                                 + 'class="col-lg-3"><img src="'
@@ -233,8 +230,8 @@ function consultBranch() {
                                                 + '</div><div class="col-lg-9"><h2 '
                                                 + 'class="list-group-item-heading">'
                                                 + snapshotMovie.child("name").val().toUpperCase()
-                                                +'</h2><br><p class="list-group-item-text">'
-                                                +'Reparto: '
+                                                + '</h2><br><p class="list-group-item-text">'
+                                                + 'Reparto: '
                                                 + snapshotMovie.child("cast").val()
                                                 + '<br>Dirección: '
                                                 + snapshotMovie.child("direction").val()
@@ -247,18 +244,20 @@ function consultBranch() {
                                                 + '</p><br><div class="btn-group"><a href="'
                                                 + snapshotMovie.child("trailer").val()
                                                 + '" class="btn btn-info btn-md sr-button">'
-                                                +'Trailer</a><a href="'
+                                                + 'Trailer</a><a href="'
                                                 + snapshotMovie.child("critics").val()
                                                 + '"class="btn btn-danger btn-md sr-button">'
-                                                +'Crítica</a><a href="'
-                                                + '#'
-                                                + '"class="btn btn-success btn-lg sr-button">'
-                                                +'Comprar tiquetes</a></div></div></div><br>';
+                                                + 'Crítica</a><a class="btn btn-success'
+                                                + 'btn-md sr-button"'
+                                                + 'href="javascript:buyTickets()">'
+                                                + 'Comprar tiquetes</a></div></div></div><br>';
                                             // insert string in html
+                                            // if movie isn't in billboard
                                             if ($(document)
                                                 .find("#" + snapshotMovie.key).length === 0){
                                                     $("#movieslistGroup").append(listItem);
-                                            }
+                                                // TODO save show id
+                                            } // TODO else save show id
                                             showBillboard();
                                             // scroll to billboard
                                             $("html, body")
@@ -279,13 +278,43 @@ function consultBranch() {
                 swal(
                     "Uups...", 
                     "¡En este momento no tenemos películas con sus preferencias!", 
-                    "error"
+                    "warning"
                 );
             }
-        }, 1500);
+        }, 1700);
         return;
     // consultButton click  
     });
+}
+
+function buyTickets() {
+    // var inputOptions = {};
+    // inputOptions["088"] = "Adrian";
+    swal({
+        title: 'Select Ukraine',
+        input: 'select',
+        inputOptions: {
+            'SRB': 'Serbia',
+            'UKR': 'Ukraine',
+            'HRV': 'Croatia'
+        },
+        inputPlaceholder: 'Select country',
+        showCancelButton: true,
+        inputValidator: function (value) {
+            return new Promise(function (resolve, reject) {
+                if (value === 'UKR') {
+                    resolve()
+                } else {
+                    reject('You need to select Ukraine :)')
+                }
+            })
+        }
+    }).then(function (result) {
+        swal({
+            type: 'success',
+            html: 'You selected: ' + result
+        })
+    })
 }
 
 jQuery(
