@@ -20,6 +20,8 @@ var config = {
 firebase.initializeApp(config);
 
 function hideBillboard() {
+    // clean billboard
+    $("#movieslistGroup").html("");
     $("#billboard").hide();
 }
 function showBillboard() {
@@ -174,7 +176,8 @@ function consultBranch() {
         var roomTypeKey = $("#selectRoomType").val();
         if (date===""|| countryKey===null||branchKey===null||roomTypeKey===null) {
             //hideBillboard();
-            sweetAlert("Uups...", "¡No has seleccionado todos los datos!", "error");
+            swal("Uups...", "¡No has seleccionado todos los datos!", "error");
+            return;
         } else {
             // set billboard title
             var input = $("#selectDate").pickadate();
@@ -208,19 +211,53 @@ function consultBranch() {
                                 // fith, have show the room type chosen?
                                 refRoom.once("value").then(function (snapshotRoom) {
                                     if (snapshotRoom.child("roomtypeID").val() == roomTypeKey) {
-                                        
-                                        var storage = firebase.storage();
-                                        var storageRef = storage.ref();
-                                        var movieRef = storageRef.child("img/deadpool.jpg");
-                                        movieRef.getDownloadURL().then(function(url) {
-                                            document.querySelector("#movieImg").src = url;
+                                        // get movie id
+                                        var movieID = childSnapshotShow.child("movieID").val();
+                                        // ref of movie
+                                        var movieRef = firebase.database()
+                                            .ref("movies/" + movieID);
+                                        // listening firebase
+                                        movieRef.once("value").then(function (snapshotMovie) {
+                                            // prepare list item string
+                                            var listItem = '<div class="list-group-item"'
+                                                + 'style="background-color:#222;'
+                                                + 'height:250px;border:0"><div '
+                                                + 'class="col-lg-3"><img src="'
+                                                + snapshotMovie.child("image").val()
+                                                + '"id="'
+                                                + snapshotMovie.key.toString()
+                                                + 'movieImg" class="img-responsive"/>'
+                                                + '</div><div class="col-lg-9"><h2 '
+                                                + 'class="list-group-item-heading">'
+                                                + snapshotMovie.child("name").val().toUpperCase()
+                                                +'</h2><br><p class="list-group-item-text">'
+                                                +'Reparto: '
+                                                + snapshotMovie.child("cast").val()
+                                                + '<br>Dirección: '
+                                                + snapshotMovie.child("direction").val()
+                                                + '<br>Estudio: '
+                                                + snapshotMovie.child("filmstudio").val()
+                                                + '<br>Género: '
+                                                + snapshotMovie.child("genre").val()
+                                                + '<br>Clasificación: '
+                                                + snapshotMovie.child("classification").val()
+                                                + '</p><br><div class="btn-group"><a href="'
+                                                + snapshotMovie.child("trailer").val()
+                                                + '" class="btn btn-info btn-md sr-button">'
+                                                +'Trailer</a><a href="'
+                                                + snapshotMovie.child("critics").val()
+                                                + '"class="btn btn-danger btn-md sr-button">'
+                                                +'Crítica</a><a href="'
+                                                + '#'
+                                                + '"class="btn btn-success btn-lg sr-button">'
+                                                +'Comprar tiquetes</a></div></div></div><br>';
+                                            // insert string in html
+                                            $("#movieslistGroup").append(listItem);
+                                            showBillboard();
+                                            // scroll to billboard
+                                            $("html, body")
+                                                .animate({scrollTop: $("#billboard").offset().top}, "slow");
                                         });
-                                        
-                                        
-                                        showBillboard();
-                                        // scroll to billboard
-                                        $("html, body")
-                                            .animate({scrollTop: $("#billboard").offset().top}, "slow");
                                     }
                                 });
                             }
@@ -239,7 +276,8 @@ function consultBranch() {
                     "error"
                 );
             }
-        }, 500);
+        }, 1500);
+        return;
     // consultButton click  
     });
 }
