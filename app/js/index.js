@@ -220,12 +220,15 @@ function consultBranch() {
                                         movieRef.once("value").then(function (snapshotMovie) {
                                             // prepare list item string
                                             var listItem = '<div class="list-group-item"'
+                                                + 'id="'
+                                                + snapshotMovie.key
+                                                + '"'
                                                 + 'style="background-color:#222;'
                                                 + 'height:250px;border:0"><div '
                                                 + 'class="col-lg-3"><img src="'
                                                 + snapshotMovie.child("image").val()
                                                 + '"id="'
-                                                + snapshotMovie.key.toString()
+                                                + snapshotMovie.key
                                                 + 'movieImg" class="img-responsive"/>'
                                                 + '</div><div class="col-lg-9"><h2 '
                                                 + 'class="list-group-item-heading">'
@@ -252,7 +255,10 @@ function consultBranch() {
                                                 + '"class="btn btn-success btn-lg sr-button">'
                                                 +'Comprar tiquetes</a></div></div></div><br>';
                                             // insert string in html
-                                            $("#movieslistGroup").append(listItem);
+                                            if ($(document)
+                                                .find("#" + snapshotMovie.key).length === 0){
+                                                    $("#movieslistGroup").append(listItem);
+                                            }
                                             showBillboard();
                                             // scroll to billboard
                                             $("html, body")
