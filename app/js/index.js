@@ -5,6 +5,10 @@
     file: index.js
     -----------------------------------------
     author: Elberth Adrian Garro Sanchez
+    -----------------------------------------
+    session storages key:
+        * branch
+        * shows
     ----------------------------------------+
 */
 
@@ -175,122 +179,142 @@ function consultBranch() {
         var branchKey = $("#selectBranch").val();
         var roomTypeKey = $("#selectRoomType").val();
         if (date===""|| countryKey===null||branchKey===null||roomTypeKey===null) {
-            //hideBillboard();
-            swal("Uups...", "¡No has seleccionado todos los datos!", "warning");
-            return;
+            swal(
+                "Uups...", 
+                "¡No has seleccionado todos los datos!", 
+                "warning"
+            );
         } else {
-            // set billboard title
-            var input = $("#selectDate").pickadate();
-            var picker = input.pickadate("picker");
-            var dateISO = picker.get("select", "yyyy-mm-dd");
-            $("#dateLabel").text("Presentando el " + date + ":");
-            // show billboard details
-            var branch = $("#selectBranch option:selected").text();
-            $("#branchLabel").text(branch);
-            var roomType = $("#selectRoomType option:selected").text();
-            $("#roomTypeLabel").text("Salas " + roomType);
-            // query billboards preferences
-            // first, know if exist shows in that branch
-            var refShows = firebase.database().ref("shows/" + branchKey);
-            refShows.once("value").then(function(snapshot) {
-                var thereShowsinBranch = snapshot.exists();
-                if (thereShowsinBranch) {
-                    // second, get the shows
-                    refShows.once("value").then(function (snapshotShow) {
-                        snapshotShow.forEach(function (childSnapshotShow) {
-                            // third, check if shows
-                            // have the selected date
-                            if (childSnapshotShow.child("dateISO").val() === dateISO) {
-                                // fourth, now get room type picked
-                                var refRoom = firebase.database()
-                                    .ref("rooms/" 
-                                        + branchKey
-                                        + "/" 
-                                        + childSnapshotShow.child("roomID").val()
-                                    );
-                                // fith, have show the room type chosen?
-                                refRoom.once("value").then(function (snapshotRoom) {
-                                    if (snapshotRoom.child("roomtypeID").val() == roomTypeKey) {
-                                        // get movie id
-                                        var movieID = childSnapshotShow.child("movieID").val();
-                                        // ref of movie
-                                        var movieRef = firebase.database()
-                                            .ref("movies/" + movieID);
-                                        // listening firebase
-                                        movieRef.once("value").then(function (snapshotMovie) {
-                                            // prepare list item string
-                                            var listItem = '<div class="list-group-item"'
-                                                + 'style="background-color:#222;'
-                                                + 'height:250px;border:0"><div '
-                                                + 'class="col-lg-3"><img src="'
-                                                + snapshotMovie.child("image").val()
-                                                + '"id="'
-                                                + snapshotMovie.key
-                                                + 'movieImg" class="img-responsive"/>'
-                                                + '</div><div class="col-lg-9"><h2 '
-                                                + 'class="list-group-item-heading">'
-                                                + snapshotMovie.child("name").val().toUpperCase()
-                                                + '</h2><br><p class="list-group-item-text">'
-                                                + 'Reparto: '
-                                                + snapshotMovie.child("cast").val()
-                                                + '<br>Dirección: '
-                                                + snapshotMovie.child("direction").val()
-                                                + '<br>Estudio: '
-                                                + snapshotMovie.child("filmstudio").val()
-                                                + '<br>Género: '
-                                                + snapshotMovie.child("genre").val()
-                                                + '<br>Clasificación: '
-                                                + snapshotMovie.child("classification").val()
-                                                + '</p><br><div class="btn-group"><a href="'
-                                                + snapshotMovie.child("trailer").val()
-                                                + '" class="btn btn-info btn-md sr-button">'
-                                                + 'Trailer</a><a href="'
-                                                + snapshotMovie.child("critics").val()
-                                                + '"class="btn btn-danger btn-md sr-button">'
-                                                + 'Crítica</a><a class="btn btn-success'
-                                                + 'btn-md sr-button"'
-                                                + 'href="javascript:buyTickets()">'
-                                                + 'Comprar tiquetes</a></div></div></div><br>';
-                                            // insert string in html
-                                            // if movie isn't in billboard
-                                            if ($(document)
-                                                .find("#" + snapshotMovie.key).length === 0){
-                                                    $("#movieslistGroup").append(listItem);
-                                                // TODO save show id
-                                            } // TODO else save show id
-                                            showBillboard();
-                                            // scroll to billboard
-                                            $("html, body")
-                                                .animate({scrollTop: $("#billboard").offset().top}, "slow");
-                                        });
-                                    }
-                                });
-                            }
-                        });
-                    });
-                }
-            });
+            createBillBoard(date, branchKey, roomTypeKey)
         }
-        // give user info about why 
-        // billboard doesn't show
-        setTimeout(function (){
-            if ($("#billboard").is(":hidden")) {
-                swal(
-                    "Uups...", 
-                    "¡En este momento no tenemos películas con sus preferencias!", 
-                    "warning"
-                );
-            }
-        }, 1700);
-        return;
-    // consultButton click  
     });
 }
 
-function buyTickets() {
+function createBillBoard(date, branchKey, roomTypeKey) {
+    // set billboard title
+    var input = $("#selectDate").pickadate();
+    var picker = input.pickadate("picker");
+    var dateISO = picker.get("select", "yyyy-mm-dd");
+    $("#dateLabel").text("Presentando el " + date + ":");
+    // show billboard details
+    var branch = $("#selectBranch option:selected").text();
+    $("#branchLabel").text(branch);
+    var roomType = $("#selectRoomType option:selected").text();
+    $("#roomTypeLabel").text("Salas " + roomType);
+    // getting billboards preferences...
+    // first, know if branch chosen exist in shows node
+    var refShowsBranch = firebase.database().ref("shows/" + branchKey).orderByKey();
+    refShowsBranch.once("value").then(function (snapshotBranch) {
+        if (snapshotBranch.exists()) {
+            // second, for every show from that branch
+            snapshotBranch.forEach(function (childSnapshotShow) {
+                // third, check if shows have the selected date
+                if (childSnapshotShow.child("dateISO").val() === dateISO) {
+                    // fourth, now get room type picked
+                    var refRoom = firebase.database()
+                        .ref("rooms/" 
+                            + branchKey
+                            + "/" 
+                            + childSnapshotShow.child("roomKey").val()
+                        );
+                    // fiveth, last step, have show the room type chosen?
+                    refRoom.once("value").then(function (snapshotRoom) {
+                        if (snapshotRoom.child("roomtypeKey").val() == roomTypeKey) {
+                            // get show key
+                            var showKey = childSnapshotShow.key
+                            // get movie key
+                            var movieKey = childSnapshotShow.child("movieKey").val();
+                            // reference of movie
+                            var movieRef = firebase.database().ref("movies/" + movieKey);
+                            // listening firebase
+                            movieRef.once("value").then(function (snapshotMovie) {
+                                // create and insert list item in html 
+                                // - if movie isn't in billboard
+                                if ($(document).find("#item" + movieKey).length === 0) {
+                                    // prepare list item string
+                                    var listItem = '<div class="list-group-item"'
+                                        + 'id="item' + movieKey +'"'
+                                        + 'style="background-color:#222;'
+                                        + 'height:250px;border:0"'
+                                        + 'data-shows="' + showKey + '"'
+                                        + '><div class="col-lg-3"><img src="'
+                                        + snapshotMovie.child("image").val()
+                                        + '"id="img' + movieKey + '"'
+                                        + ' class="img-responsive"/>'
+                                        + '</div><div class="col-lg-9"><h2 '
+                                        + 'class="list-group-item-heading">'
+                                        + snapshotMovie.child("name").val().toUpperCase()
+                                        + '</h2><br><p class="list-group-item-text">'
+                                        + 'Reparto: ' + snapshotMovie.child("cast").val()
+                                        + '<br>Dirección: '
+                                        + snapshotMovie.child("direction").val()
+                                        + '<br>Estudio: '
+                                        + snapshotMovie.child("filmstudio").val()
+                                        + '<br>Género: '
+                                        + snapshotMovie.child("genre").val()
+                                        + '<br>Clasificación: '
+                                        + snapshotMovie.child("classification").val()
+                                        + '</p><br><div class="btn-group"><a href="'
+                                        + snapshotMovie.child("trailer").val()
+                                        + '" class="btn btn-info btn-md sr-button">'
+                                        + 'Trailer</a><a href="'
+                                        + snapshotMovie.child("critics").val()
+                                        + '"class="btn btn-danger btn-md sr-button">'
+                                        + 'Crítica</a><a id="btn'
+                                        + movieKey + '"class="btn btn-success'
+                                        + 'btn-md sr-button">'
+                                        + 'Comprar tiquetes</a></div></div></div><br>';
+                                    // inserting html code
+                                    $("#movieslistGroup").append(listItem);
+                                    // adding function to buy button
+                                    $("#btn" + movieKey)
+                                    .bind("auxBuyTickets", function() {
+                                        buyTickets(branchKey, movieKey)
+                                    });
+                                    $("#btn" + movieKey).click(function() {
+                                        $(this).trigger("auxBuyTickets");
+                                    });
+                                } else {
+                                    var oldDataShows = $("#item" + movieKey)
+                                        .attr("data-shows");
+                                    $("#item" + movieKey)
+                                        .attr("data-shows", oldDataShows + "," + showKey);
+                                }
+                            });
+                            showBillboard();
+                            // scroll to billboard
+                            $("html, body")
+                                .animate(
+                                    {scrollTop: $("#billboard").offset().top}, 
+                                    "slow"
+                                );
+                        }
+                    });
+                }
+            });
+            // end forEach
+        }
+    });
+    // give user info about why 
+    // billboard doesn't show
+    setTimeout(function (){
+        if ($("#billboard").is(":hidden")) {
+            swal(
+                "Uups...", 
+                "¡En este momento no tenemos películas con sus preferencias!", 
+                "warning"
+            );
+        }
+    }, 2000);
+}
+
+// , showsKeys
+function buyTickets(branchKey, movieKey) {
+    console.log(branchKey);
+    console.log($("#item" + movieKey).attr("data-shows"));
     // var inputOptions = {};
     // inputOptions["088"] = "Adrian";
-    swal({
+    /*swal({
         title: 'Select Ukraine',
         input: 'select',
         inputOptions: {
@@ -314,7 +338,7 @@ function buyTickets() {
             type: 'success',
             html: 'You selected: ' + result
         })
-    })
+    })*/
 }
 
 jQuery(
