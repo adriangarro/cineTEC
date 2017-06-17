@@ -222,6 +222,8 @@ function createBillBoard(date, branchKey, roomTypeKey) {
                         if (snapshotRoom.child("roomtypeKey").val() == roomTypeKey) {
                             // get show key
                             var showKey = childSnapshotShow.key
+                            // get show hour
+                            var showHour = childSnapshotShow.child("hourISO").val();
                             // get movie key
                             var movieKey = childSnapshotShow.child("movieKey").val();
                             // reference of movie
@@ -236,7 +238,7 @@ function createBillBoard(date, branchKey, roomTypeKey) {
                                         + 'id="item' + movieKey +'"'
                                         + 'style="background-color:#222;'
                                         + 'height:250px;border:0"'
-                                        + 'data-shows="' + showKey + '"'
+                                        + 'data-shows-hours=""'
                                         + '><div class="col-lg-3"><img src="'
                                         + snapshotMovie.child("image").val()
                                         + '"id="img' + movieKey + '"'
@@ -266,6 +268,13 @@ function createBillBoard(date, branchKey, roomTypeKey) {
                                         + 'Comprar tiquetes</a></div></div></div><br>';
                                     // inserting html code
                                     $("#movieslistGroup").append(listItem);
+                                    // adding show and hour of movie
+                                    $("#item" + movieKey)
+                                        .attr("data-shows-hours", 
+                                            '"' + showKey + '"'
+                                            + ':' 
+                                            + '"' + showHour + '"'
+                                        );
                                     // adding function to buy button
                                     $("#btn" + movieKey)
                                     .bind("auxBuyTickets", function() {
@@ -275,70 +284,69 @@ function createBillBoard(date, branchKey, roomTypeKey) {
                                         $(this).trigger("auxBuyTickets");
                                     });
                                 } else {
-                                    var oldDataShows = $("#item" + movieKey)
-                                        .attr("data-shows");
+                                    var oldData = $("#item" + movieKey)
+                                        .attr("data-shows-hours");
                                     $("#item" + movieKey)
-                                        .attr("data-shows", oldDataShows + "," + showKey);
+                                        .attr("data-shows-hours", 
+                                            oldData + "," 
+                                            + '"' + showKey + '"'
+                                            + ':' 
+                                            + '"' + showHour + '"'
+                                        );
                                 }
                             });
-                            showBillboard();
-                            // scroll to billboard
-                            $("html, body")
-                                .animate(
-                                    {scrollTop: $("#billboard").offset().top}, 
-                                    "slow"
-                                );
+                            
                         }
                     });
                 }
+            // end forEach    
             });
-            // end forEach
+            // wait for firebase by 1.5 seconds
+            setTimeout(function () {
+                // show movies if they exist with user preferences
+                if (!$("#movieslistGroup").is(":empty")) {
+                    showBillboard();
+                    // scroll to billboard
+                    $("html, body")
+                        .animate(
+                            {scrollTop: $("#billboard").offset().top}, 
+                            "slow"
+                        );
+                } else {
+                    // give user info about why billboard doesn't show
+                    swal(
+                        "Uups...", 
+                        "¡En este momento no tenemos películas con sus preferencias!", 
+                        "warning"
+                    ); 
+                }
+            }, 1500);
         }
     });
-    // give user info about why 
-    // billboard doesn't show
-    setTimeout(function (){
-        if ($("#billboard").is(":hidden")) {
-            swal(
-                "Uups...", 
-                "¡En este momento no tenemos películas con sus preferencias!", 
-                "warning"
-            );
-        }
-    }, 2000);
 }
 
 function buyTickets(branchKey, movieKey) {
-    var showsKeys = $("#item" + movieKey).attr("data-shows");
-    // TO DO
-    
-    // var inputOptions = {};
-    // inputOptions["088"] = "Adrian";
-    /*swal({
-        title: 'Select Ukraine',
+    var showsHoursObj = JSON.parse(
+        '{' + $("#item" + movieKey).attr("data-shows-hours") + '}'
+    );
+    swal({
+        title: 'Selecciona la hora que prefieras',
         input: 'select',
-        inputOptions: {
-            'SRB': 'Serbia',
-            'UKR': 'Ukraine',
-            'HRV': 'Croatia'
-        },
-        inputPlaceholder: 'Select country',
-        showCancelButton: true,
-        inputValidator: function (value) {
-            return new Promise(function (resolve, reject) {
-                if (value === 'UKR') {
-                    resolve()
-                } else {
-                    reject('You need to select Ukraine :)')
-                }
-            })
-        }
+        inputOptions: showsHoursObj,
+        inputPlaceholder: 'Seleccionar hora',
+        showCancelButton: true
     }).then(function (result) {
         swal({
             type: 'success',
-            html: 'You selected: ' + result
-        })
-    })*/
+            html: 'Has seleccionado: ' + showsHoursObj[result]
+        }).then(function () {
+            // TO DO
+            $('#myModal').modal('toggle');
+            // create modal
+            // add modal to body
+            // launch modal
+        });
+    })
 }
 
 jQuery(
