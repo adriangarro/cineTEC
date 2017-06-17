@@ -308,10 +308,10 @@ function createBillBoard(date, branchKey, roomTypeKey) {
     }, 2000);
 }
 
-// , showsKeys
 function buyTickets(branchKey, movieKey) {
-    console.log(branchKey);
-    console.log($("#item" + movieKey).attr("data-shows"));
+    var showsKeys = $("#item" + movieKey).attr("data-shows");
+    // TO DO
+    
     // var inputOptions = {};
     // inputOptions["088"] = "Adrian";
     /*swal({
