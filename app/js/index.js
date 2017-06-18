@@ -1,14 +1,10 @@
 /*
     +----------------------------------------
-    project: cineTEC
+    project: cineTEC, June 2017
     -----------------------------------------
     file: index.js
     -----------------------------------------
-    author: Elberth Adrian Garro Sanchez
-    -----------------------------------------
-    session storages key:
-        * branch
-        * shows
+    author: Elberth Adrián Garro Sánchez
     ----------------------------------------+
 */
 
@@ -174,10 +170,13 @@ function hideBillboardIfChangeRoomTypes() {
 
 function consultBranch() {
     $("#consultButton").click(function () {
+        //---------------------------------------------
+        // get pref data from init form
         var date = $("#selectDate").val();
         var countryKey = $("#selectCountry").val();
         var branchKey = $("#selectBranch").val();
         var roomTypeKey = $("#selectRoomType").val();
+        //---------------------------------------------
         if (date===""|| countryKey===null||branchKey===null||roomTypeKey===null) {
             swal(
                 "Uups...", 
@@ -185,12 +184,18 @@ function consultBranch() {
                 "warning"
             );
         } else {
-            createBillBoard(date, branchKey, roomTypeKey)
+            createBillBoard();
         }
     });
 }
 
-function createBillBoard(date, branchKey, roomTypeKey) {
+function createBillBoard() {
+    //---------------------------------------------
+    // get pref data from init form
+    var date = $("#selectDate").val();
+    var branchKey = $("#selectBranch").val();
+    var roomTypeKey = $("#selectRoomType").val();
+    //---------------------------------------------
     // set billboard title
     var input = $("#selectDate").pickadate();
     var picker = input.pickadate("picker");
@@ -217,13 +222,17 @@ function createBillBoard(date, branchKey, roomTypeKey) {
                             + "/" 
                             + childSnapshotShow.child("roomKey").val()
                         );
-                    // fiveth, last step, have show the room type chosen?
+                    // fifth, last step, have show the room type chosen?
                     refRoom.once("value").then(function (snapshotRoom) {
                         if (snapshotRoom.child("roomtypeKey").val() == roomTypeKey) {
                             // get show key
                             var showKey = childSnapshotShow.key
                             // get show hour
                             var showHour = childSnapshotShow.child("hourISO").val();
+                            // get show capacity
+                            var showCapacity = snapshotRoom.child("capacity").val();
+                            // get show price
+                            var showPrice = childSnapshotShow.child("price").val();
                             // get movie key
                             var movieKey = childSnapshotShow.child("movieKey").val();
                             // reference of movie
@@ -238,7 +247,9 @@ function createBillBoard(date, branchKey, roomTypeKey) {
                                         + 'id="item' + movieKey +'"'
                                         + 'style="background-color:#222;'
                                         + 'height:250px;border:0"'
-                                        + 'data-shows-hours=""'
+                                        + 'data-shows-hours=""'       // !
+                                        + 'data-shows-prices=""'      // !
+                                        + 'data-shows-capacities=""'  // !
                                         + '><div class="col-lg-3"><img src="'
                                         + snapshotMovie.child("image").val()
                                         + '"id="img' + movieKey + '"'
@@ -262,36 +273,72 @@ function createBillBoard(date, branchKey, roomTypeKey) {
                                         + 'Trailer</a><a href="'
                                         + snapshotMovie.child("critics").val()
                                         + '"class="btn btn-danger btn-md sr-button">'
-                                        + 'Crítica</a><a id="btn'
-                                        + movieKey + '"class="btn btn-success'
-                                        + 'btn-md sr-button">'
-                                        + 'Comprar tiquetes</a></div></div></div><br>';
+                                        + 'Crítica</a><a ' 
+                                        + 'class="btn btn-success'
+                                        + ' btn-md sr-button"'
+                                        + ' id="btn' + movieKey + '">'
+                                        + 'Comprar tiquetes</a></div></div></div><br><br>';
                                     // inserting html code
                                     $("#movieslistGroup").append(listItem);
-                                    // adding show and hour of movie
+                                    // adding show and hour
                                     $("#item" + movieKey)
                                         .attr("data-shows-hours", 
                                             '"' + showKey + '"'
                                             + ':' 
                                             + '"' + showHour + '"'
                                         );
+                                    // adding show and its capacity
+                                     $("#item" + movieKey)
+                                        .attr("data-shows-capacities", 
+                                            '"' + showKey + '"'
+                                            + ':' 
+                                            + '"' + showCapacity + '"'
+                                        );    
+                                    // adding show and its price
+                                    $("#item" + movieKey)
+                                        .attr("data-shows-prices", 
+                                            '"' + showKey + '"'
+                                            + ':' 
+                                            + '"' + showPrice + '"'
+                                        );    
                                     // adding function to buy button
                                     $("#btn" + movieKey)
                                     .bind("auxBuyTickets", function() {
-                                        buyTickets(branchKey, movieKey)
+                                        buyTickets(movieKey)
                                     });
                                     $("#btn" + movieKey).click(function() {
                                         $(this).trigger("auxBuyTickets");
                                     });
                                 } else {
-                                    var oldData = $("#item" + movieKey)
+                                    // adding another show and hour
+                                    var oldDataShowsHours = $("#item" + movieKey)
                                         .attr("data-shows-hours");
                                     $("#item" + movieKey)
                                         .attr("data-shows-hours", 
-                                            oldData + "," 
+                                            oldDataShowsHours + "," 
                                             + '"' + showKey + '"'
                                             + ':' 
                                             + '"' + showHour + '"'
+                                        );
+                                    // adding another show and capacity
+                                    var oldDataShowsCapacities = $("#item" + movieKey)
+                                        .attr("data-shows-capacities");
+                                    $("#item" + movieKey)
+                                        .attr("data-shows-capacities", 
+                                            oldDataShowsCapacities + "," 
+                                            + '"' + showKey + '"'
+                                            + ':' 
+                                            + '"' + showCapacity + '"'
+                                        );    
+                                    // adding another show and price
+                                    var oldDataShowsPrices = $("#item" + movieKey)
+                                        .attr("data-shows-prices");
+                                    $("#item" + movieKey)
+                                        .attr("data-shows-prices", 
+                                            oldDataShowsPrices + "," 
+                                            + '"' + showKey + '"'
+                                            + ':' 
+                                            + '"' + showPrice + '"'
                                         );
                                 }
                             });
@@ -325,28 +372,75 @@ function createBillBoard(date, branchKey, roomTypeKey) {
     });
 }
 
-function buyTickets(branchKey, movieKey) {
+function buyTickets(movieKey) {
+    //---------------------------------------------
+    // get pref data from init form
+    var date = $("#selectDate").val();
+    var countryKey = $("#selectCountry").val();
+    var branchKey = $("#selectBranch").val();
+    var roomTypeKey = $("#selectRoomType").val();
+    //---------------------------------------------
+    // create show : hour object
     var showsHoursObj = JSON.parse(
         '{' + $("#item" + movieKey).attr("data-shows-hours") + '}'
     );
+    // create show : capacity object
+    var showsCapacitiesObj = JSON.parse(
+        '{' + $("#item" + movieKey).attr("data-shows-capacities") + '}'
+    );
+    // create show : price object
+    var showsPricesObj = JSON.parse(
+        '{' + $("#item" + movieKey).attr("data-shows-prices") + '}'
+    );
+    // select movie hour
     swal({
-        title: 'Selecciona la hora que prefieras',
+        title: 'Hora de la película',
+        html: '¡Selecciona la hora que prefieras!',
         input: 'select',
         inputOptions: showsHoursObj,
         inputPlaceholder: 'Seleccionar hora',
-        showCancelButton: true
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Confirmar',
+        animation: false,
+        customClass: 'animated rubberBand',
+        allowOutsideClick: false
     }).then(function (result) {
+        // save showKey
+        sessionStorage.setItem("selectedShow", result);
+        // display hour option to user
         swal({
             type: 'success',
-            html: 'Has seleccionado: ' + showsHoursObj[result]
+            title: '¡Buena elección!',
+            html: 'Verás la película a esta hora: ' + showsHoursObj[result],
+            animation: false,
+            customClass: 'animated pulse',
+            allowOutsideClick: false
         }).then(function () {
-            // TO DO
-            $('#myModal').modal('toggle');
-            // create modal
-            // add modal to body
-            // launch modal
+            // ask for user's email
+            swal({
+                title: 'Correo electrónico',
+                html: 'Ingresa tu correo electrónico',
+                input: 'email',
+                inputPlaceholder: 'deadpool@badass.com',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Confirmar',
+                animation: false,
+                customClass: 'animated pulse',
+                allowOutsideClick: false
+            }).then(function (email) {
+                // save user's email
+                sessionStorage.setItem("userEmail", email);
+                // display email to user
+                swal({
+                    type: 'success',
+                    title: '¡Genial!',
+                    html: 'Los tiquetes se enviarán a ' + email
+                }); // delete; then
+            });
         });
-    })
+    });
 }
 
 jQuery(
