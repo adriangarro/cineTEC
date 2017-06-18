@@ -402,9 +402,19 @@ function buyTickets(movieKey) {
         showCancelButton: true,
         cancelButtonText: 'Cancelar',
         confirmButtonText: 'Confirmar',
+        confirmButtonColor: '#F05F40',
         animation: false,
         customClass: 'animated rubberBand',
-        allowOutsideClick: false
+        allowOutsideClick: false,
+        inputValidator: function (value) {
+            return new Promise(function (resolve, reject) {
+                if (!value) {
+                    reject('¡Tienes que seleccionar una hora!');
+                } else {
+                    resolve();
+                }
+            })
+        }
     }).then(function (result) {
         // save showKey
         sessionStorage.setItem("selectedShow", result);
@@ -414,21 +424,32 @@ function buyTickets(movieKey) {
             title: '¡Buena elección!',
             html: 'Verás la película a esta hora: ' + showsHoursObj[result],
             animation: false,
+            confirmButtonColor: '#F05F40',
             customClass: 'animated pulse',
             allowOutsideClick: false
         }).then(function () {
             // ask for user's email
             swal({
                 title: 'Correo electrónico',
-                html: 'Ingresa tu correo electrónico',
+                html: 'Ingresa tu correo electrónico.',
                 input: 'email',
                 inputPlaceholder: 'deadpool@badass.com',
                 showCancelButton: true,
                 cancelButtonText: 'Cancelar',
                 confirmButtonText: 'Confirmar',
+                confirmButtonColor: '#F05F40',
                 animation: false,
                 customClass: 'animated pulse',
-                allowOutsideClick: false
+                allowOutsideClick: false,
+                inputValidator: function (value) {
+                    return new Promise(function (resolve, reject) {
+                        if (!value) {
+                            reject('¡Debes indicar tu correo!');
+                        } else {
+                            resolve();
+                        }
+                    })
+                }
             }).then(function (email) {
                 // save user's email
                 sessionStorage.setItem("userEmail", email);
@@ -436,10 +457,45 @@ function buyTickets(movieKey) {
                 swal({
                     type: 'success',
                     title: '¡Genial!',
-                    html: 'Los tiquetes se enviarán a ' + email
-                }); // delete; then
+                    html: 'Los tiquetes se enviarán a ' + email,
+                    confirmButtonColor: '#F05F40',
+                    customClass: 'animated pulse',
+                    allowOutsideClick: false
+                }).then(function () {
+                    // get current show capacity (TODO: improve with firebase)
+                    var capacity = showsCapacitiesObj[
+                        sessionStorage.getItem("selectedShow")
+                    ];
+                    // change ticket quantity attributes
+                    $('#ticketQuant').attr("min", 1);
+                    $('#ticketQuant').attr("max", capacity);
+                    // display modal
+                    $('#seatModal').modal('toggle');
+                    // calculate and display price
+                    // make purchase
+                    return;
+                });
             });
         });
+    });
+}
+
+function changingNumberSeats() {
+    // if user changes the number of tickets
+    $('#ticketQuant').change(function () {
+        // uncheck all seats
+        $('.single-checkbox').prop('checked', false);
+    });
+}
+
+function allowCheckOnlyLimitSeats() {
+    // allow check only the number of seats that user indicates
+    $('.single-checkbox').change(function () {
+        var maxAllowed = $('#ticketQuant').val();
+        var count = $('.single-checkbox:checked').length;
+        if (count > maxAllowed) {
+            $(this).prop('checked', false);
+        }
     });
 }
 
@@ -450,5 +506,7 @@ jQuery(
     showBranches(),
     showRoomTypes(),
     hideBillboardIfChangeRoomTypes(),
-    consultBranch()
+    consultBranch(),
+    changingNumberSeats(),
+    allowCheckOnlyLimitSeats()
 )
