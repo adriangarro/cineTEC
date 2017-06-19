@@ -45,7 +45,7 @@
 
     <!-- Modal for selecting seats -->
     <div class="modal fade" id="seatModal" tabindex="-1" role="dialog" aria-labelledby="seatModalLabel">
-        <div class="modal-dialog modal-md" role="document">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -65,11 +65,8 @@
                     </br>
                     
                     <div class="plane" id="seatsBox">
-                    <div class="cockpit">
-                        <h1>¡Pantalla!</h1>
-                    </div>
-                    <div class="exit exit--front fuselage"></div>
-                    <ol class="cabin fuselage">
+                    <div class="front">PANTALLA</div>
+                    <ol class="cabin">
                         <li class="row row--1">
                             <ol class="seats" type="A">
                                 <li class="seat">
@@ -84,9 +81,13 @@
                                     <input class="single-checkbox" type="checkbox" id="1C" />
                                     <label for="1C">1C</label>
                                 </li>
-                                <li class="seat">
+                                <!--empty<li class="seat">
                                     <input class="single-checkbox" type="checkbox" disabled id="1D" />
                                     <label for="1D">Occupied</label>
+                                </li>-->
+                                <li class="seat">
+                                    <input class="single-checkbox" type="checkbox" id="1D" />
+                                    <label for="1D">1D</label>
                                 </li>
                                 <li class="seat">
                                     <input class="single-checkbox" type="checkbox" id="1E" />
@@ -351,7 +352,6 @@
                             </ol>
                         </li>
                     </ol>
-                    <div class="exit exit--back fuselage"></div>
                 </div>
                 </div>
                 

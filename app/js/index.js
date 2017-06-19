@@ -470,10 +470,23 @@ function buyTickets(movieKey) {
                     $('#ticketQuant').attr("min", 1);
                     $('#ticketQuant').attr("max", capacity);
                     // display modal
-                    $('#seatModal').modal('toggle');
-                    // calculate and display price
-                    // make purchase
-                    return;
+                    $('#seatModal').modal({backdrop: 'static', keyboard: false});
+                    // if user click en ready btn
+                    $('#readyBtn').click(function () {
+                        // close seat modal
+                        $('#seatModal').modal('toggle');
+                        // inform user that only need to make the payment
+                        swal({
+                            type: 'success',
+                            title: '¡Excelente!',
+                            html: 'Solo falta que realices tu pago.',
+                            confirmButtonColor: '#F05F40',
+                            customClass: 'animated pulse',
+                            allowOutsideClick: false
+                        })
+                        // preparing to perform the transaction 
+                        // and save changes to the database
+                    });
                 });
             });
         });
