@@ -242,11 +242,15 @@ function createBillBoard() {
                                 // create and insert list item in html 
                                 // - if movie isn't in billboard
                                 if ($(document).find("#item" + movieKey).length === 0) {
+                                    // getting movie name
+                                    var movieName = snapshotMovie
+                                        .child("name").val().toUpperCase();
                                     // prepare list item string
                                     var listItem = '<div class="list-group-item"'
                                         + 'id="item' + movieKey +'"'
                                         + 'style="background-color:#222;'
                                         + 'height:250px;border:0"'
+                                        + 'data-movieName=""'         // !
                                         + 'data-shows-hours=""'       // !
                                         + 'data-shows-prices=""'      // !
                                         + 'data-shows-capacities=""'  // !
@@ -256,7 +260,7 @@ function createBillBoard() {
                                         + ' class="img-responsive"/>'
                                         + '</div><div class="col-lg-9"><h2 '
                                         + 'class="list-group-item-heading">'
-                                        + snapshotMovie.child("name").val().toUpperCase()
+                                        + movieName
                                         + '</h2><br><p class="list-group-item-text">'
                                         + 'Reparto: ' + snapshotMovie.child("cast").val()
                                         + '<br>Dirección: '
@@ -280,6 +284,9 @@ function createBillBoard() {
                                         + 'Comprar tiquetes</a></div></div></div><br><br>';
                                     // inserting html code
                                     $("#movieslistGroup").append(listItem);
+                                    // adding movie name
+                                    $("#item" + movieKey)
+                                        .attr("data-movieName", movieName);
                                     // adding show and hour
                                     $("#item" + movieKey)
                                         .attr("data-shows-hours", 
@@ -469,6 +476,7 @@ function buyTickets(movieKey) {
                     // change ticket quantity attributes
                     $('#ticketQuant').attr("min", 1);
                     $('#ticketQuant').attr("max", capacity);
+                    // TODO hide seats selled
                     // display modal
                     $('#seatModal').modal({backdrop: 'static', keyboard: false});
                     // if user click en ready btn
@@ -486,6 +494,29 @@ function buyTickets(movieKey) {
                         })
                         // preparing to perform the transaction 
                         // and save changes to the database
+                        // TODO
+                        // get shows marked
+                        // add info to modal
+                        // show credit card input
+                        $('#payModal').modal('toggle');
+                        $('#payForm').card({
+                            container: '.card-wrapper',
+                            width: 200,
+                            formatting: true,
+                            placeholders: {
+                                number: '**** **** **** ****',
+                                name: 'Wade Wilson',
+                                expiry: '**/****',
+                                cvc: '***'
+                            },
+                            masks: {
+                                cardNumber: '•'
+                            },
+                            messages: {
+                                validDate: 'exp\nd',
+                                monthYear: 'mm/yy'
+                            }
+                        });
                     });
                 });
             });

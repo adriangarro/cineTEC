@@ -38,6 +38,9 @@
     <!-- Sweet Alert -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.css" rel="stylesheet" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" rel="stylesheet" type="text/css">
+    
+     <!-- jQuery Card -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/card/2.3.0/card.css" type="text/css">
 
 </head>
 
@@ -61,9 +64,7 @@
                             <input class="form-control" type="number" id="ticketQuant">
                         </div>
                     </div>
-                    
                     </br>
-                    
                     <div class="plane" id="seatsBox">
                     <div class="front">PANTALLA</div>
                     <ol class="cabin">
@@ -354,11 +355,64 @@
                     </ol>
                 </div>
                 </div>
-                
                 <div class="modal-footer">
                     <a id="readyBtn" type="button" class="btn btn-primary">
                         ¡Listo!
                     </a>
+                    <a type="button" class="btn btn-default" data-dismiss="modal">
+                        Cancelar
+                    </a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    
+    <!-- Modal to make payments -->
+    <div class="modal fade" id="payModal" tabindex="-1" role="dialog" aria-labelledby="payModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="payModalLabel">Realizar pago</h4>
+                </div>
+                <div class="modal-body">
+                    <label>
+                        SUCURSAL:
+                    </label>
+                    </br>
+                    <label>
+                        PELÍCULA:
+                    </label>
+                    </br>
+                    <label>
+                        FECHA:
+                    </label>
+                    </br>
+                    <label>
+                        ASIENTOS:
+                    </label>
+                    </br>
+                    <label>
+                        TOTAL:
+                    </label>
+                    </br>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <h4>Información de pago</h4>
+                            <div class="card-wrapper"></div>
+                            <div class="col-md-10 col-md-offset-2">
+                                <form id="payForm">
+                                    <input placeholder="Número de tarjeta" type="text" name="number">
+                                    <input placeholder="Nombre Completo" type="text" name="name">
+                                    <input placeholder="MM/YY" type="text" name="expiry">
+                                    <input placeholder="CVC" type="text" name="cvc">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a id="endBtn" type="button" class="btn btn-primary">Aceptar</a>
                     <a type="button" class="btn btn-default" data-dismiss="modal">
                         Cancelar
                     </a>
@@ -625,6 +679,9 @@
     
     <!-- SweetAlert -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.js"></script>
+    
+    <!-- jQuery Card -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/card/2.3.0/jquery.card.min.js"></script>
     
     <!-- Main script -->
     <script src="js/index.js"></script>
