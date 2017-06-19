@@ -233,6 +233,8 @@ function createBillBoard() {
                             var showCapacity = snapshotRoom.child("capacity").val();
                             // get show price
                             var showPrice = childSnapshotShow.child("price").val();
+                            // get show previous reservations
+                            var reservs = childSnapshotShow.child("reservations").val();
                             // get movie key
                             var movieKey = childSnapshotShow.child("movieKey").val();
                             // reference of movie
@@ -250,10 +252,11 @@ function createBillBoard() {
                                         + 'id="item' + movieKey +'"'
                                         + 'style="background-color:#222;'
                                         + 'height:250px;border:0"'
-                                        + 'data-movieName=""'         // !
-                                        + 'data-shows-hours=""'       // !
-                                        + 'data-shows-prices=""'      // !
-                                        + 'data-shows-capacities=""'  // !
+                                        + 'data-movieName=""'          // !
+                                        + 'data-shows-hours=""'        // !
+                                        + 'data-shows-prices=""'       // !
+                                        + 'data-shows-capacities=""'   // !
+                                        + 'data-shows-reservations=""' // !
                                         + '><div class="col-lg-3"><img src="'
                                         + snapshotMovie.child("image").val()
                                         + '"id="img' + movieKey + '"'
@@ -307,7 +310,14 @@ function createBillBoard() {
                                             '"' + showKey + '"'
                                             + ':' 
                                             + '"' + showPrice + '"'
-                                        );    
+                                        );
+                                    // adding show reservations
+                                    $("#item" + movieKey)
+                                        .attr("data-shows-reservations", 
+                                            '"' + showKey + '"'
+                                            + ':' 
+                                            + '"' + reservs + '"'
+                                        );
                                     // adding function to buy button
                                     $("#btn" + movieKey)
                                     .bind("auxBuyTickets", function() {
@@ -346,6 +356,16 @@ function createBillBoard() {
                                             + '"' + showKey + '"'
                                             + ':' 
                                             + '"' + showPrice + '"'
+                                        );
+                                    // adding another show and reservations
+                                    var oldDataShowsReservs = $("#item" + movieKey)
+                                        .attr("data-shows-reservations");
+                                    $("#item" + movieKey)
+                                        .attr("data-shows-reservations", 
+                                            oldDataShowsReservs + "," 
+                                            + '"' + showKey + '"'
+                                            + ':' 
+                                            + '"' + reservs + '"'
                                         );
                                 }
                             });
@@ -398,6 +418,10 @@ function buyTickets(movieKey) {
     // create show : price object
     var showsPricesObj = JSON.parse(
         '{' + $("#item" + movieKey).attr("data-shows-prices") + '}'
+    );
+    // create show : reservations object
+    var showsReservsObj = JSON.parse(
+        '{' + $("#item" + movieKey).attr("data-shows-reservations") + '}'
     );
     // select movie hour
     swal({
@@ -469,12 +493,13 @@ function buyTickets(movieKey) {
                     var capacity = showsCapacitiesObj[
                         sessionStorage.getItem("selectedShow")
                     ];
+                    // TODO color seats according to reservations
                     // change ticket quantity attributes
                     $('#ticketQuant').attr("min", 1);
                     $('#ticketQuant').attr("max", capacity);
                     // TODO hide seats selled
                     // display modal
-                    $('#seatModal').modal('toggle');
+                    setTimeout(function(){ $('#seatModal').modal('toggle'); }, 1000);
                     // if user click on ready btn
                     $('#readySeatsBtn').click(function () {
                         // check user's input
@@ -503,7 +528,6 @@ function buyTickets(movieKey) {
                                 customClass: 'animated pulse',
                                 allowOutsideClick: false
                             })
-                            // TODO get shows marked
                             // add info to modal
                             // - branch name
                             $('#branchLabelInPayModal').append(
@@ -522,14 +546,16 @@ function buyTickets(movieKey) {
                             );
                             // - seats TODO
                             $('#seatsLabelInPayModal').append(
-                                ''
+                                showsReservsObj[
+                                    sessionStorage.getItem("selectedShow")
+                                ].toUpperCase()
                             );
                             // - pay cash TO DO
                             $('#totalCashLabelInPayModal').append(
                                 ''
                             );
                             // show credit card input
-                            $('#payModal').modal('toggle');
+                            setTimeout(function(){ $('#payModal').modal('toggle'); }, 1000);
                             $('#payForm').card({
                                 container: '.card-wrapper',
                                 width: 200,
@@ -550,7 +576,7 @@ function buyTickets(movieKey) {
                             });
                         }
                     });
-                    //aqui
+                    //
                 });
             });
         });
