@@ -412,7 +412,6 @@ function buyTickets(movieKey) {
         confirmButtonColor: '#F05F40',
         animation: false,
         customClass: 'animated rubberBand',
-        allowOutsideClick: false,
         inputValidator: function (value) {
             return new Promise(function (resolve, reject) {
                 if (!value) {
@@ -432,8 +431,7 @@ function buyTickets(movieKey) {
             html: 'Verás la película a esta hora: ' + showsHoursObj[result],
             animation: false,
             confirmButtonColor: '#F05F40',
-            customClass: 'animated pulse',
-            allowOutsideClick: false
+            customClass: 'animated pulse'
         }).then(function () {
             // ask for user's email
             swal({
@@ -447,7 +445,6 @@ function buyTickets(movieKey) {
                 confirmButtonColor: '#F05F40',
                 animation: false,
                 customClass: 'animated pulse',
-                allowOutsideClick: false,
                 inputValidator: function (value) {
                     return new Promise(function (resolve, reject) {
                         if (!value) {
@@ -466,8 +463,7 @@ function buyTickets(movieKey) {
                     title: '¡Genial!',
                     html: 'Los tiquetes se enviarán a ' + email,
                     confirmButtonColor: '#F05F40',
-                    customClass: 'animated pulse',
-                    allowOutsideClick: false
+                    customClass: 'animated pulse'
                 }).then(function () {
                     // get current show capacity (TODO: improve with firebase)
                     var capacity = showsCapacitiesObj[
@@ -478,46 +474,83 @@ function buyTickets(movieKey) {
                     $('#ticketQuant').attr("max", capacity);
                     // TODO hide seats selled
                     // display modal
-                    $('#seatModal').modal({backdrop: 'static', keyboard: false});
-                    // if user click en ready btn
-                    $('#readyBtn').click(function () {
-                        // close seat modal
-                        $('#seatModal').modal('toggle');
-                        // inform user that only need to make the payment
-                        swal({
-                            type: 'success',
-                            title: '¡Excelente!',
-                            html: 'Solo falta que realices tu pago.',
-                            confirmButtonColor: '#F05F40',
-                            customClass: 'animated pulse',
-                            allowOutsideClick: false
-                        })
-                        // preparing to perform the transaction 
-                        // and save changes to the database
-                        // TODO
-                        // get shows marked
-                        // add info to modal
-                        // show credit card input
-                        $('#payModal').modal('toggle');
-                        $('#payForm').card({
-                            container: '.card-wrapper',
-                            width: 200,
-                            formatting: true,
-                            placeholders: {
-                                number: '**** **** **** ****',
-                                name: 'Wade Wilson',
-                                expiry: '**/****',
-                                cvc: '***'
-                            },
-                            masks: {
-                                cardNumber: '•'
-                            },
-                            messages: {
-                                validDate: 'exp\nd',
-                                monthYear: 'mm/yy'
-                            }
-                        });
+                    $('#seatModal').modal('toggle');
+                    // if user click on ready btn
+                    $('#readySeatsBtn').click(function () {
+                        // check user's input
+                        if (!$('#ticketQuant').val()) {
+                            swal(
+                                "Uups...", 
+                                "¡Debes indicar la cantidad de asientos!", 
+                                "warning"
+                            );
+                        } else if ($('.single-checkbox:checked').length
+                            < $('#ticketQuant').val()) {
+                            swal(
+                                "Uups...", 
+                                "¡Debes seleccionar los asientos!", 
+                                "warning"
+                            );
+                        } else {
+                            // close seat modal
+                            $('#seatModal').modal('toggle');
+                            // inform user that only need to make the payment
+                            swal({
+                                type: 'success',
+                                title: '¡Excelente!',
+                                html: 'Solo falta que realices tu pago.',
+                                confirmButtonColor: '#F05F40',
+                                customClass: 'animated pulse',
+                                allowOutsideClick: false
+                            })
+                            // TODO get shows marked
+                            // add info to modal
+                            // - branch name
+                            $('#branchLabelInPayModal').append(
+                                $("#selectBranch option:selected")
+                                    .text()
+                                    .toUpperCase()
+                            );
+                            // - movie name
+                            $('#movieLabelInPayModal').append(
+                                $("#item" + movieKey)
+                                    .attr('data-movieName')
+                            );
+                            // - date
+                            $('#dateLabelInPayModal').append(
+                                date.toUpperCase()
+                            );
+                            // - seats TODO
+                            $('#seatsLabelInPayModal').append(
+                                ''
+                            );
+                            // - pay cash TO DO
+                            $('#totalCashLabelInPayModal').append(
+                                ''
+                            );
+                            // show credit card input
+                            $('#payModal').modal('toggle');
+                            $('#payForm').card({
+                                container: '.card-wrapper',
+                                width: 200,
+                                formatting: true,
+                                placeholders: {
+                                    number: '**** **** **** ****',
+                                    name: 'Wade Wilson',
+                                    expiry: '**/****',
+                                    cvc: '***'
+                                },
+                                masks: {
+                                    cardNumber: '•'
+                                },
+                                messages: {
+                                    validDate: 'exp\nd',
+                                    monthYear: 'mm/yy'
+                                }
+                            });
+                        }
                     });
+                    //aqui
                 });
             });
         });
