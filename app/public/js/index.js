@@ -407,6 +407,8 @@ function buyTickets(movieKey) {
     var branchKey = $("#selectBranch").val();
     var roomTypeKey = $("#selectRoomType").val();
     //---------------------------------------------
+    // clear modal
+    
     // create show : hour object
     var showsHoursObj = JSON.parse(
         '{' + $("#item" + movieKey).attr("data-shows-hours") + '}'
@@ -493,11 +495,26 @@ function buyTickets(movieKey) {
                     var capacity = showsCapacitiesObj[
                         sessionStorage.getItem("selectedShow")
                     ];
-                    // TODO color seats according to reservations
+                    // get seats
+                    var seatsStr = showsReservsObj[
+                        sessionStorage.getItem("selectedShow")
+                    ].toUpperCase();
+                    // if there seats reserved
+                    if (seatsStr) {
+                        // get array of seats
+                        var seats = seatsStr.split(",");
+                        // update capacity
+                        var len = seats.length;
+                        capacity -= len;
+                        // color seats according to reservations
+                        for (var i = 0; i < len; ++i) {
+                            $('#' + seats[i]).attr('disabled', true);
+                        }
+                    }
                     // change ticket quantity attributes
                     $('#ticketQuant').attr("min", 1);
                     $('#ticketQuant').attr("max", capacity);
-                    // TODO hide seats selled
+                    $('#ticketQuant').val(capacity - (capacity - 1));
                     // display modal
                     setTimeout(function(){ $('#seatModal').modal('toggle'); }, 1000);
                     // if user click on ready btn
@@ -544,11 +561,9 @@ function buyTickets(movieKey) {
                             $('#dateLabelInPayModal').append(
                                 date.toUpperCase()
                             );
-                            // - seats TODO
+                            // - seats
                             $('#seatsLabelInPayModal').append(
-                                showsReservsObj[
-                                    sessionStorage.getItem("selectedShow")
-                                ].toUpperCase()
+                                seatsStr
                             );
                             // - pay cash TO DO
                             $('#totalCashLabelInPayModal').append(
