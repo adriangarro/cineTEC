@@ -407,8 +407,12 @@ function buyTickets(movieKey) {
     var branchKey = $("#selectBranch").val();
     var roomTypeKey = $("#selectRoomType").val();
     //---------------------------------------------
-    // clear modal
-    
+    // clear seat modal
+    $('#ticketQuant').val(0);
+    $('.single-checkbox').prop('checked', false);
+    $('.single-checkbox').attr('disabled', false);
+    // clear pay modal
+    // TODO
     // create show : hour object
     var showsHoursObj = JSON.parse(
         '{' + $("#item" + movieKey).attr("data-shows-hours") + '}'
@@ -516,7 +520,7 @@ function buyTickets(movieKey) {
                     $('#ticketQuant').attr("max", capacity);
                     $('#ticketQuant').val(capacity - (capacity - 1));
                     // display modal
-                    setTimeout(function(){ $('#seatModal').modal('toggle'); }, 1000);
+                    $('#seatModal').modal('toggle');
                     // if user click on ready btn
                     $('#readySeatsBtn').click(function () {
                         // check user's input
@@ -542,35 +546,40 @@ function buyTickets(movieKey) {
                                 title: '¡Excelente!',
                                 html: 'Solo falta que realices tu pago.',
                                 confirmButtonColor: '#F05F40',
-                                customClass: 'animated pulse',
-                                allowOutsideClick: false
+                                customClass: 'animated pulse'
                             })
+                            
                             // add info to modal
                             // - branch name
                             $('#branchLabelInPayModal').append(
+                                'SUCURSAL: ' + 
                                 $("#selectBranch option:selected")
                                     .text()
                                     .toUpperCase()
                             );
                             // - movie name
                             $('#movieLabelInPayModal').append(
+                                'PELÍCULA: ' +
                                 $("#item" + movieKey)
                                     .attr('data-movieName')
                             );
                             // - date
                             $('#dateLabelInPayModal').append(
+                                'FECHA: ' +
                                 date.toUpperCase()
                             );
                             // - seats
                             $('#seatsLabelInPayModal').append(
+                                'ASIENTOS: ' +
                                 seatsStr
                             );
                             // - pay cash TO DO
                             $('#totalCashLabelInPayModal').append(
-                                ''
+                                'TOTAL: ' + showsPricesObj[
+                                    sessionStorage.getItem("selectedShow")
+                                ]
                             );
-                            // show credit card input
-                            setTimeout(function(){ $('#payModal').modal('toggle'); }, 1000);
+                            // configure credit card input
                             $('#payForm').card({
                                 container: '.card-wrapper',
                                 width: 200,
@@ -589,6 +598,8 @@ function buyTickets(movieKey) {
                                     monthYear: 'mm/yy'
                                 }
                             });
+                            // display modal
+                            $('#payModal').modal('toggle');
                         }
                     });
                     //

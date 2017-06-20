@@ -1,0 +1,22 @@
+[debug] [2017-06-20T20:03:11.647Z] ----------------------------------------------------------------------
+[debug] [2017-06-20T20:03:11.674Z] Command:      /usr/local/Cellar/node/8.1.2/bin/node /usr/local/bin/firebase deploy
+[debug] [2017-06-20T20:03:11.674Z] CLI Version:  3.9.1
+[debug] [2017-06-20T20:03:11.674Z] Platform:     darwin
+[debug] [2017-06-20T20:03:11.674Z] Node Version: v8.1.2
+[debug] [2017-06-20T20:03:11.678Z] Time:         Tue Jun 20 2017 14:03:11 GMT-0600 (CST)
+[debug] [2017-06-20T20:03:11.679Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-06-20T20:03:11.779Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-06-20T20:03:11.779Z] > authorizing via signed-in user
+[debug] [2017-06-20T20:03:11.783Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/cinetec-b2a0f  
+ Tue Jun 20 2017 14:03:11 GMT-0600 (CST)
+[debug] [2017-06-20T20:03:12.698Z] <<< HTTP RESPONSE 200
+[debug] [2017-06-20T20:03:12.700Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/cinetec-b2a0f/tokens  
+ Tue Jun 20 2017 14:03:12 GMT-0600 (CST)
+[debug] [2017-06-20T20:03:13.211Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'cinetec-b2a0f'...
+[info] 
+[info] i  deploying database, hosting
+[info] ✔  database: rules ready to deploy.
+[info] i  hosting: preparing public directory for upload...
