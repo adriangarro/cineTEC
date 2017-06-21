@@ -412,7 +412,30 @@ function buyTickets(movieKey) {
     $('.single-checkbox').prop('checked', false);
     $('.single-checkbox').attr('disabled', false);
     // clear pay modal
-    // TODO
+    $('#branchLabelInPayModal').text('');
+    $('#movieLabelInPayModal').text('');
+    $('#dateLabelInPayModal').text('');
+    $('#seatsLabelInPayModal').text('');
+    $('#totalCashLabelInPayModal').text('');
+    // add card form
+    $('#payForm').card({
+        container: '.card-wrapper',
+        width: 200,
+        formatting: true,
+        placeholders: {
+            number: '**** **** **** ****',
+            name: 'Wade Wilson',
+            expiry: '**/****',
+            cvc: '***'
+        },
+        masks: {
+            cardNumber: '•'
+        },
+        messages: {
+            validDate: 'exp\nd',
+            monthYear: 'mm/yy'
+        }
+    });
     // create show : hour object
     var showsHoursObj = JSON.parse(
         '{' + $("#item" + movieKey).attr("data-shows-hours") + '}'
@@ -503,17 +526,14 @@ function buyTickets(movieKey) {
                     var seatsStr = showsReservsObj[
                         sessionStorage.getItem("selectedShow")
                     ].toUpperCase();
-                    // if there seats reserved
-                    if (seatsStr) {
-                        // get array of seats
-                        var seats = seatsStr.split(",");
-                        // update capacity
-                        var len = seats.length;
-                        capacity -= len;
-                        // color seats according to reservations
-                        for (var i = 0; i < len; ++i) {
-                            $('#' + seats[i]).attr('disabled', true);
-                        }
+                    // get array of seats
+                    var seatsArr = seatsStr.split(",");
+                    // update capacity
+                    var arrLen = seatsArr.length;
+                    capacity -= arrLen;
+                    // color seats according to reservations
+                    for (var i = 0; i < arrLen; ++i) {
+                        $('#' + seatsArr[i]).attr('disabled', true);
                     }
                     // change ticket quantity attributes
                     $('#ticketQuant').attr("min", 1);
@@ -547,62 +567,53 @@ function buyTickets(movieKey) {
                                 html: 'Solo falta que realices tu pago.',
                                 confirmButtonColor: '#F05F40',
                                 customClass: 'animated pulse'
-                            })
-                            
-                            // add info to modal
-                            // - branch name
-                            $('#branchLabelInPayModal').append(
-                                'SUCURSAL: ' + 
-                                $("#selectBranch option:selected")
-                                    .text()
-                                    .toUpperCase()
-                            );
-                            // - movie name
-                            $('#movieLabelInPayModal').append(
-                                'PELÍCULA: ' +
-                                $("#item" + movieKey)
-                                    .attr('data-movieName')
-                            );
-                            // - date
-                            $('#dateLabelInPayModal').append(
-                                'FECHA: ' +
-                                date.toUpperCase()
-                            );
-                            // - seats
-                            $('#seatsLabelInPayModal').append(
-                                'ASIENTOS: ' +
-                                seatsStr
-                            );
-                            // - pay cash TO DO
-                            $('#totalCashLabelInPayModal').append(
-                                'TOTAL: ' + showsPricesObj[
-                                    sessionStorage.getItem("selectedShow")
-                                ]
-                            );
-                            // configure credit card input
-                            $('#payForm').card({
-                                container: '.card-wrapper',
-                                width: 200,
-                                formatting: true,
-                                placeholders: {
-                                    number: '**** **** **** ****',
-                                    name: 'Wade Wilson',
-                                    expiry: '**/****',
-                                    cvc: '***'
-                                },
-                                masks: {
-                                    cardNumber: '•'
-                                },
-                                messages: {
-                                    validDate: 'exp\nd',
-                                    monthYear: 'mm/yy'
-                                }
+                            }).then(function () {
+                                // add info to modal
+                                // - branch name
+                                $('#branchLabelInPayModal').append(
+                                    'SUCURSAL: ' + 
+                                    $("#selectBranch option:selected")
+                                        .text()
+                                        .toUpperCase()
+                                );
+                                // - movie name
+                                $('#movieLabelInPayModal').append(
+                                    'PELÍCULA: ' +
+                                    $("#item" + movieKey)
+                                        .attr('data-movieName')
+                                );
+                                // - date
+                                $('#dateLabelInPayModal').append(
+                                    'FECHA: ' +
+                                    date.toUpperCase()
+                                );
+                                // - seats
+                                var seatsToUpload = '';
+                                $('.single-checkbox:checked').each(function() {
+                                    seatsToUpload += this.id + ',';
+                                });
+                                $('#seatsLabelInPayModal').append(
+                                    'ASIENTOS: ' +
+                                    seatsToUpload.slice(0, -1)
+                                );
+                                // - pay cash TO DO
+                                $('#totalCashLabelInPayModal').append(
+                                    'TOTAL: ' + showsPricesObj[
+                                        sessionStorage.getItem("selectedShow")
+                                    ] * $('#ticketQuant').val()
+                                );
+                                // display modal
+                                $('#payModal').modal('toggle');
                             });
-                            // display modal
-                            $('#payModal').modal('toggle');
+                            //
+                            $('#endBtn').click(function () {
+                                $('#payModal').modal('toggle');
+                            });
+                            $('#endCancelBtn').click(function () {
+                                $('#payModal').modal('toggle');
+                            });
                         }
                     });
-                    //
                 });
             });
         });
