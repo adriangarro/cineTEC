@@ -523,11 +523,11 @@ function buyTickets(movieKey) {
                         sessionStorage.getItem("selectedShow")
                     ];
                     // get seats
-                    var seatsStr = showsReservsObj[
+                    var seatsStrFB = showsReservsObj[
                         sessionStorage.getItem("selectedShow")
                     ].toUpperCase();
                     // get array of seats
-                    var seatsArr = seatsStr.split(",");
+                    var seatsArr = seatsStrFB.split(",");
                     // update capacity
                     var arrLen = seatsArr.length;
                     capacity -= arrLen;
@@ -588,15 +588,19 @@ function buyTickets(movieKey) {
                                     date.toUpperCase()
                                 );
                                 // - seats
-                                var seatsToUpload = '';
+                                var seatsSelected = '';
                                 $('.single-checkbox:checked').each(function() {
-                                    seatsToUpload += this.id + ',';
+                                    seatsSelected += this.id + ',';
                                 });
+                                seatsSelected = seatsSelected.slice(0, -1);
                                 $('#seatsLabelInPayModal').append(
                                     'ASIENTOS: ' +
-                                    seatsToUpload.slice(0, -1)
+                                    seatsSelected
                                 );
-                                // - pay cash TO DO
+                                sessionStorage.setItem(
+                                    "seatsToUpload", seatsStrFB + ',' + seatsSelected
+                                );
+                                // - pay cash
                                 $('#totalCashLabelInPayModal').append(
                                     'TOTAL: ' + showsPricesObj[
                                         sessionStorage.getItem("selectedShow")
@@ -608,9 +612,17 @@ function buyTickets(movieKey) {
                             //
                             $('#endBtn').click(function () {
                                 $('#payModal').modal('toggle');
-                            });
-                            $('#endCancelBtn').click(function () {
-                                $('#payModal').modal('toggle');
+                                // store data in firebase
+                                writeShowReservs();
+                                // send email
+                                // finish message
+                                swal({
+                                    type: 'success',
+                                    title: '¡Gracias por tu compra!',
+                                    html: 'Que disfrutes de la película.',
+                                    confirmButtonColor: '#F05F40',
+                                    customClass: 'animated pulse'
+                                })
                             });
                         }
                     });
@@ -636,6 +648,16 @@ function allowCheckOnlyLimitSeats() {
         if (count > maxAllowed) {
             $(this).prop('checked', false);
         }
+    });
+}
+
+function writeShowReservs() {
+    firebase.database().ref('shows/' 
+        + $("#selectBranch").val()
+        + '/' 
+        + sessionStorage.getItem("selectedShow")
+    ).update({
+        reservations: sessionStorage.getItem("seatsToUpload")
     });
 }
 
