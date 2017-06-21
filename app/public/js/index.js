@@ -611,18 +611,34 @@ function buyTickets(movieKey) {
                             });
                             //
                             $('#endBtn').click(function () {
-                                $('#payModal').modal('toggle');
-                                // store data in firebase
-                                writeShowReservs();
-                                // send email
-                                // finish message
-                                swal({
-                                    type: 'success',
-                                    title: '¡Gracias por tu compra!',
-                                    html: 'Que disfrutes de la película.',
-                                    confirmButtonColor: '#F05F40',
-                                    customClass: 'animated pulse'
-                                })
+                                var validate = true;
+                                $('#payForm input').each(function() {
+                                    if ($(this).val() === '') {
+                                        validate = false;
+                                    }
+                                });
+                                if (!validate) {
+                                    swal({
+                                        type: 'warning',
+                                        title: '¡Uups!',
+                                        html: 'Los datos de la tarjeta no son válidos.',
+                                        confirmButtonColor: '#F05F40',
+                                        customClass: 'animated pulse'
+                                    })
+                                } else {
+                                    $('#payModal').modal('toggle');
+                                    // store data in firebase
+                                    writeShowReservs();
+                                    // send email
+                                    // finish message
+                                    swal({
+                                        type: 'success',
+                                        title: '¡Gracias por tu compra!',
+                                        html: 'Que disfrutes de la película.',
+                                        confirmButtonColor: '#F05F40',
+                                        customClass: 'animated pulse'
+                                    })
+                                }
                             });
                         }
                     });
